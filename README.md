@@ -5,7 +5,7 @@ Java library for bitbank.cc, Bitcoin exchange.
 
 API document: [https://docs.bitbank.cc/](https://docs.bitbank.cc/)
 
-# install
+# Install
 
 
 # How to use
@@ -43,4 +43,14 @@ Assets as = bb.getAsset();
 #### Order Info
 ```
 Order order = bb.getOrder(CurrencyPair.BTC_JPY, 90956209);
+```
+
+#### Send New Order
+```
+Order order = bb.sendOrder(CurrencyPair.BTC_JPY, 130000, BigDecimal.valueOf(0.01), OrderSide.BUY, OrderType.LIMIT);
+```
+
+#### Cancel Order
+```
+Order order = bb.cancelOrder(CurrencyPair.BTC_JPY, 129781978);
 ```

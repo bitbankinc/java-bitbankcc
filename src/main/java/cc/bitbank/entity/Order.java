@@ -27,6 +27,8 @@ public class Order extends Data {
     public BigDecimal averagePrice;
     @JsonProperty("ordered_at")
     public Date orderedAt;
+    @JsonProperty("canceled_at")
+    public Date canceledAt;
     public String status;
 
     public String toString() {
