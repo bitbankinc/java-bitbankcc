@@ -25,11 +25,12 @@ public class Example {
 //            bb.getTransaction(CurrencyPair.BTC_JPY, "20170410").transactions[0]
 //            bb.getCandlestick(CurrencyPair.BTC_JPY, CandleType._1DAY, "2017").candlestick[0].getOhlcvList()
 
-            Assets as = bb.getAsset();
-            System.out.println(as.assets[0]);
+//            Assets as = bb.getAsset();
+//            System.out.println(as.assets[0]);
+//
+//            Order order = bb.getOrder(CurrencyPair.BTC_JPY, 90956209);
+//            System.out.println(order);
 
-            Order order = bb.getOrder(CurrencyPair.BTC_JPY, 90956209);
-            System.out.println(order);
 
 
 
