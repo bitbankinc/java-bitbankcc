@@ -1,4 +1,4 @@
-package cc.bitbank.entity.json;
+package cc.bitbank.entity.response;
 
 import cc.bitbank.entity.Data;
 

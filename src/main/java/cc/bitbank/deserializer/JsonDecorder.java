@@ -1,6 +1,6 @@
-package cc.bitbank.entity.json;
+package cc.bitbank.deserializer;
 
-import cc.bitbank.entity.Data;
+import cc.bitbank.entity.response.Response;
 import cc.bitbank.exception.BitbankException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 

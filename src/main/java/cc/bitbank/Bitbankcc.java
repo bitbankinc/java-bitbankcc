@@ -2,10 +2,14 @@ package cc.bitbank;
 
 
 
+import cc.bitbank.deserializer.JsonDecorder;
 import cc.bitbank.entity.*;
 import cc.bitbank.entity.enums.CandleType;
 import cc.bitbank.entity.enums.CurrencyPair;
-import cc.bitbank.entity.json.*;
+import cc.bitbank.entity.enums.OrderSide;
+import cc.bitbank.entity.enums.OrderType;
+import cc.bitbank.entity.request.OrderBody;
+import cc.bitbank.entity.response.*;
 import cc.bitbank.exception.BitbankException;
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
@@ -13,8 +17,11 @@ import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.client.utils.URLEncodedUtils;
+import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.message.BasicHeader;
 import org.apache.http.message.BasicNameValuePair;
@@ -23,6 +30,7 @@ import org.apache.http.util.EntityUtils;
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.*;
@@ -54,35 +62,45 @@ public class Bitbankcc {
                 .setPath(path);
     }
 
-    private List<Header> getPublicRequestHeader() {
-        List<Header> headers = new ArrayList<Header>();
-        headers.add(new BasicHeader("content-type","application/json; charset=utf-8"));
-        return headers;
-    }
-
-    private URIBuilder getPrivatecUriBuilder(String path) {
+    private URIBuilder getPrivateUriBuilder(String path) {
         URIBuilder builder = new URIBuilder();
         return builder.setScheme("https")
                 .setHost(this.endPointPrivate)
                 .setPath(path);
     }
 
-    private List<Header> getPrivateRequestHeader(String path, List<NameValuePair> query) throws BitbankException {
-        String nonce = String.valueOf(System.currentTimeMillis());
+    private List<Header> getPublicRequestHeader() {
         List<Header> headers = new ArrayList<Header>();
         headers.add(new BasicHeader("content-type","application/json; charset=utf-8"));
-        headers.add(new BasicHeader("ACCESS-KEY", this.apiKey));
-        headers.add(new BasicHeader("ACCESS-NONCE", nonce));
-        headers.add(new BasicHeader("ACCESS-SIGNATURE", createSign(path, query, nonce)));
         return headers;
     }
 
-    private String createSign(String path, List<NameValuePair> query, String nonce) throws BitbankException {
+    private List<Header> makePrivateRequestHeader(long nonce, String sign) throws BitbankException {
+        List<Header> headers = new ArrayList<Header>();
+        headers.add(new BasicHeader("content-type","application/json; charset=utf-8"));
+        headers.add(new BasicHeader("ACCESS-KEY", this.apiKey));
+        headers.add(new BasicHeader("ACCESS-NONCE", String.valueOf(nonce)));
+        headers.add(new BasicHeader("ACCESS-SIGNATURE", sign));
+        return headers;
+    }
+
+    private List<Header> getPrivateRequestHeader(String path, List<NameValuePair> query) throws BitbankException {
+        long nonce = System.currentTimeMillis();
+        String queryString = URLEncodedUtils.format(query, "utf-8");
+        if(query.size() > 0) queryString = "?" + queryString;
+        String message = String.valueOf(nonce) + path + queryString;
+        return makePrivateRequestHeader(nonce, createSign(message));
+    }
+
+    private List<Header> getPrivateRequestHeader(String json) throws BitbankException {
+        long nonce = System.currentTimeMillis();
+        String message = String.valueOf(nonce) + json;
+        return makePrivateRequestHeader(nonce, createSign(message));
+    }
+
+    private String createSign(String message) throws BitbankException {
         try {
             String algo = "HmacSHA256";
-            String queryString = URLEncodedUtils.format(query, "utf-8");
-            if(query.size() > 0) queryString = "?" + queryString;
-            String message = nonce + path + queryString;
             String secret = this.apiSecret;
 
             SecretKeySpec sk = new SecretKeySpec(secret.getBytes(), algo);
@@ -100,12 +118,9 @@ public class Bitbankcc {
         }
     }
 
-    private <T extends Response> T doHttpGet(URIBuilder builder, Class<T> clazz, List<Header> header) throws BitbankException, IOException {
+    private <T extends Response> T httpExecute(HttpClient client, HttpRequestBase http, Class<T> clazz) throws BitbankException, IOException {
         try {
-            URI uri = builder.build();
-            HttpGet httpGet = new HttpGet(uri);
-            HttpClient client = HttpClientBuilder.create().setDefaultHeaders(header).build();
-            HttpResponse response = client.execute(httpGet);
+            HttpResponse response = client.execute(http);
             HttpEntity entity = response.getEntity();
             String json = EntityUtils.toString(entity);
             System.out.println(json);
@@ -118,11 +133,32 @@ public class Bitbankcc {
             } else {
                 return result;
             }
+        } catch (IOException e) {
+            //System.out.println(e.getLocalizedMessage());
+            throw e;
+        }
+    }
+
+    private <T extends Response> T doHttpGet(URIBuilder builder, Class<T> clazz, List<Header> header) throws BitbankException, IOException {
+        try {
+            URI uri = builder.build();
+            HttpGet httpGet = new HttpGet(uri);
+            HttpClient client = HttpClientBuilder.create().setDefaultHeaders(header).build();
+            return httpExecute(client, httpGet, clazz);
         } catch (URISyntaxException e) {
             throw new BitbankException(e.getMessage());
-        } catch (IOException e) {
-            System.out.println(e.getLocalizedMessage());
-            throw e;
+        }
+    }
+
+    private <T extends Response> T doHttpPost(URIBuilder builder, Class<T> clazz, List<Header> header, StringEntity entityBody) throws BitbankException, IOException {
+        try {
+            URI uri = builder.build();
+            HttpPost httpPost = new HttpPost(uri);
+            httpPost.setEntity(entityBody);
+            HttpClient client = HttpClientBuilder.create().setDefaultHeaders(header).build();
+            return httpExecute(client, httpPost, clazz);
+        } catch (URISyntaxException e) {
+            throw new BitbankException(e.getMessage());
         }
     }
 
@@ -163,7 +199,7 @@ public class Bitbankcc {
 
     Assets getAsset() throws BitbankException, IOException {
         String path = "/v1/user/assets";
-        URIBuilder builder = getPrivatecUriBuilder(path);
+        URIBuilder builder = getPrivateUriBuilder(path);
         AssetsResponse result = doHttpGet(builder, AssetsResponse.class,
                 getPrivateRequestHeader(path, Collections.<NameValuePair>emptyList()));
         return result.data;
@@ -175,8 +211,22 @@ public class Bitbankcc {
         nameValuePair.add(new BasicNameValuePair("pair", pair.getCode()));
         nameValuePair.add(new BasicNameValuePair("order_id", String.valueOf(id)));
 
-        URIBuilder builder = getPrivatecUriBuilder(path).setParameters(nameValuePair);
+        URIBuilder builder = getPrivateUriBuilder(path).setParameters(nameValuePair);
         OrderResponse result = doHttpGet(builder, OrderResponse.class, getPrivateRequestHeader(path, nameValuePair));
         return result.data;
     }
+
+    Order sendOrder(CurrencyPair pair, int price, BigDecimal amount, OrderSide side, OrderType type)
+            throws BitbankException, IOException {
+        String path = "/v1/user/spot/order";
+        URIBuilder builder = getPrivateUriBuilder(path);
+
+        String json = new OrderBody(pair, amount, price, side, type).toJson();
+        StringEntity entity = new StringEntity(json);
+        OrderResponse result = doHttpPost(builder, OrderResponse.class, getPrivateRequestHeader(json), entity);
+        return result.data;
+    }
+
+
+
 }
