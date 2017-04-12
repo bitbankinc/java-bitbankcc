@@ -2,6 +2,7 @@ package cc.bitbank;
 
 import cc.bitbank.entity.Assets;
 import cc.bitbank.entity.Order;
+import cc.bitbank.entity.Orders;
 import cc.bitbank.entity.enums.CurrencyPair;
 import cc.bitbank.entity.enums.OrderSide;
 import cc.bitbank.entity.enums.OrderType;
@@ -31,15 +32,19 @@ public class Example {
 //            Assets as = bb.getAsset();
 //            System.out.println(as.assets[0]);
 //
-            Order order = bb.getOrder(CurrencyPair.BTC_JPY, 90956209);
-            System.out.println(order);
-            System.out.println(order.canceledAt);
+//            Order order = bb.getOrder(CurrencyPair.BTC_JPY, 90956209);
+//            System.out.println(order);
 //
 //            Order order2 = bb.sendOrder(CurrencyPair.BTC_JPY, 10000, BigDecimal.valueOf(0.01), OrderSide.BUY, OrderType.LIMIT);
 //            System.out.println(order2);
 
 //            Order order3 = bb.cancelOrder(CurrencyPair.BTC_JPY, 129781978);
 //            System.out.println(order3);
+
+            long[] ids = {129830841, 129830734};
+            Orders orders = bb.cancelOrders(CurrencyPair.BTC_JPY, ids);
+            System.out.println(orders.orders[0]);
+            System.out.println(orders.orders[1]);
 
 
         } catch (BitbankException e) {

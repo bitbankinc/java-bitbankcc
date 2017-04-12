@@ -50,7 +50,11 @@ Order order = bb.getOrder(CurrencyPair.BTC_JPY, 90956209);
 Order order = bb.sendOrder(CurrencyPair.BTC_JPY, 130000, BigDecimal.valueOf(0.01), OrderSide.BUY, OrderType.LIMIT);
 ```
 
-#### Cancel Order
+#### Cancel Order/Orders
 ```
 Order order = bb.cancelOrder(CurrencyPair.BTC_JPY, 129781978);
+
+long[] ids = {129830841, 129830734};
+Orders orders = bb.cancelOrders(CurrencyPair.BTC_JPY, ids);
+System.out.println(orders.orders[0]);
 ```

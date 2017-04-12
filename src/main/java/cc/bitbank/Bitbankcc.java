@@ -9,6 +9,7 @@ import cc.bitbank.entity.enums.CurrencyPair;
 import cc.bitbank.entity.enums.OrderSide;
 import cc.bitbank.entity.enums.OrderType;
 import cc.bitbank.entity.request.CancelBody;
+import cc.bitbank.entity.request.CancelsBody;
 import cc.bitbank.entity.request.OrderBody;
 import cc.bitbank.entity.response.*;
 import cc.bitbank.exception.BitbankException;
@@ -235,6 +236,16 @@ public class Bitbankcc {
         String json = new CancelBody(pair, orderId).toJson();
         StringEntity entity = new StringEntity(json);
         OrderResponse result = doHttpPost(builder, OrderResponse.class, getPrivateRequestHeader(json), entity);
+        return result.data;
+    }
+
+    Orders cancelOrders(CurrencyPair pair, long[] orderIds) throws BitbankException, IOException {
+        String path = "/v1/user/spot/cancel_orders";
+        URIBuilder builder = getPrivateUriBuilder(path);
+
+        String json = new CancelsBody(pair, orderIds).toJson();
+        StringEntity entity = new StringEntity(json);
+        OrdersResponse result = doHttpPost(builder, OrdersResponse.class, getPrivateRequestHeader(json), entity);
         return result.data;
     }
 
