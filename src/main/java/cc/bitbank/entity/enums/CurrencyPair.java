@@ -1,4 +1,4 @@
-package cc.bitbank.entity;
+package cc.bitbank.entity.enums;
 
 /**
  * Created by tanaka on 2017/04/11.

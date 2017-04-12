@@ -1,4 +1,4 @@
-package cc.bitbank.entity;
+package cc.bitbank.entity.enums;
 
 import cc.bitbank.entity.json.OrderSideDeserializer;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;

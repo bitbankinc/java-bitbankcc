@@ -1,5 +1,6 @@
 package cc.bitbank.entity;
 
+import cc.bitbank.entity.enums.OrderSide;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.math.BigDecimal;

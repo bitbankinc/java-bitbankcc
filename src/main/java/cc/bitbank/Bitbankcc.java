@@ -3,6 +3,8 @@ package cc.bitbank;
 
 
 import cc.bitbank.entity.*;
+import cc.bitbank.entity.enums.CandleType;
+import cc.bitbank.entity.enums.CurrencyPair;
 import cc.bitbank.entity.json.*;
 import cc.bitbank.exception.BitbankException;
 import org.apache.http.Header;
@@ -15,6 +17,7 @@ import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.client.utils.URLEncodedUtils;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.message.BasicHeader;
+import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 
 import javax.crypto.Mac;
@@ -78,6 +81,7 @@ public class Bitbankcc {
         try {
             String algo = "HmacSHA256";
             String queryString = URLEncodedUtils.format(query, "utf-8");
+            if(query.size() > 0) queryString = "?" + queryString;
             String message = nonce + path + queryString;
             String secret = this.apiSecret;
 
@@ -90,7 +94,6 @@ public class Bitbankcc {
             for(byte b: macBytes) {
                 sb.append(String.format("%02x", b&0xff) );
             }
-            System.out.println(sb);
             return sb.toString();
         } catch (Exception e) {
             throw new BitbankException(e.getMessage());
@@ -163,6 +166,17 @@ public class Bitbankcc {
         URIBuilder builder = getPrivatecUriBuilder(path);
         AssetsResponse result = doHttpGet(builder, AssetsResponse.class,
                 getPrivateRequestHeader(path, Collections.<NameValuePair>emptyList()));
+        return result.data;
+    }
+
+    Order getOrder(CurrencyPair pair, long id) throws BitbankException, IOException {
+        String path = "/v1/user/spot/order";
+        List<NameValuePair> nameValuePair = new ArrayList<NameValuePair>();
+        nameValuePair.add(new BasicNameValuePair("pair", pair.getCode()));
+        nameValuePair.add(new BasicNameValuePair("order_id", String.valueOf(id)));
+
+        URIBuilder builder = getPrivatecUriBuilder(path).setParameters(nameValuePair);
+        OrderResponse result = doHttpGet(builder, OrderResponse.class, getPrivateRequestHeader(path, nameValuePair));
         return result.data;
     }
 }

@@ -1,8 +1,8 @@
 package cc.bitbank;
 
 import cc.bitbank.entity.Assets;
-import cc.bitbank.entity.CandleType;
-import cc.bitbank.entity.CurrencyPair;
+import cc.bitbank.entity.Order;
+import cc.bitbank.entity.enums.CurrencyPair;
 import cc.bitbank.exception.BitbankException;
 
 import java.util.ResourceBundle;
@@ -26,6 +26,10 @@ public class Example {
 //            bb.getCandlestick(CurrencyPair.BTC_JPY, CandleType._1DAY, "2017").candlestick[0].getOhlcvList()
 
             Assets as = bb.getAsset();
+            System.out.println(as.assets[0]);
+
+            Order order = bb.getOrder(CurrencyPair.BTC_JPY, 90956209);
+            System.out.println(order);
 
 
 
