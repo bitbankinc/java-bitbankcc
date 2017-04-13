@@ -25,6 +25,17 @@ Add the following dependency to your project's pom.xml
 ```
 Or you can use .jar file here [https://github.com/bitbankinc/java-bitbankcc/releases](https://github.com/bitbankinc/java-bitbankcc/releases)
 
+### For Scala
+Add the following dependency to your project's build.sbt
+```
+resolvers += "bitbankinc" at "https://raw.github.com/bitbankinc/java-bitbankcc/raw/mvn-repo/"
+
+libraryDependencies  ++=  Seq(
+    "cc.bitbank" % "java-bitbankcc" % "1.0.0"
+)
+
+```
+
 # How to use
 ## Public API
 ```
