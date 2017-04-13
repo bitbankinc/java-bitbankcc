@@ -65,13 +65,34 @@ System.out.println(orders.orders[0]);
 ```
 
 #### Active Orders
+Option's parameter can be seen in [document page](https://docs.bitbank.cc/#!/Order/active_orders)
 ```
 Map<String, Long> option = new HashMap();
 option.put("count", 1L);
 option.put("since", 1490348550380L);
-// Option's parameter can be seen in [document page](https://docs.bitbank.cc/#!/Order/active_orders)
 Orders orders = bb.getActiveOrders(CurrencyPair.BTC_JPY, option);
 for(Order o : orders.orders) {
     System.out.println(o);
+}
+```
+
+#### Withdrawal Account
+```
+Accounts accounts = bb.getWithdrawalAccounts("btc");
+for(Accounts.Account a : accounts.accounts) {
+    System.out.println(a);
+}
+```
+
+# Error Handling
+```
+Bitbankcc bb = new Bitbankcc();
+try {
+    bb.getTicker(CurrencyPair.BTC_JPY);
+} catch (BitbankException e) {
+    // bitbank API error. https://docs.bitbank.cc/error_code
+    System.out.println(e.code);
+} catch (Exception e) {
+    // other error
 }
 ```

@@ -23,7 +23,7 @@ public class Assets extends Data {
         public Object withdrawalFee;
 
         public String toString() {
-            return "[Asset] asset " + asset + ", onhand_amount " + onhandAmount;
+            return "[Assets] asset " + asset + ", onhand_amount " + onhandAmount;
         }
     }
 

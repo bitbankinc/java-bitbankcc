@@ -1,5 +1,6 @@
 package cc.bitbank;
 
+import cc.bitbank.entity.Accounts;
 import cc.bitbank.entity.Assets;
 import cc.bitbank.entity.Order;
 import cc.bitbank.entity.Orders;
@@ -53,14 +54,20 @@ public class Example {
 //            System.out.println(orders.orders[0]);
 //            System.out.println(orders.orders[1]);
 
-            Map<String, Long> option = new HashMap();
-            option.put("count", 1L);
-            option.put("since", 1490348550380L);
-            // Option's parameter can be seen https://docs.bitbank.cc/#!/Order/active_orders
-            Orders orders = bb.getActiveOrders(CurrencyPair.BTC_JPY, option);
-            for(Order o : orders.orders) {
-                System.out.println(o);
+//            Map<String, Long> option = new HashMap();
+//            option.put("count", 1L);
+//            option.put("since", 1490348550380L);
+//            // Option's parameter can be seen https://docs.bitbank.cc/#!/Order/active_orders
+//            Orders orders = bb.getActiveOrders(CurrencyPair.BTC_JPY, option);
+//            for(Order o : orders.orders) {
+//                System.out.println(o);
+//            }
+
+            Accounts accounts = bb.getWithdrawalAccounts("btc");
+            for(Accounts.Account a : accounts.accounts) {
+                System.out.println(a);
             }
+
 
 
         } catch (BitbankException e) {

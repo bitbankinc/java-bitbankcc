@@ -271,4 +271,15 @@ public class Bitbankcc {
         return result.data;
     }
 
+    Accounts getWithdrawalAccounts(String asset) throws BitbankException, IOException {
+        String path = "/v1/user/withdrawal_account";
+        List<NameValuePair> nameValuePair = new ArrayList<NameValuePair>();
+        nameValuePair.add(new BasicNameValuePair("asset", asset));
+
+        URIBuilder builder = getPrivateUriBuilder(path).addParameters(nameValuePair);
+        AccountsResponse result = doHttpGet(builder, AccountsResponse.class,
+                getPrivateRequestHeader(path, nameValuePair));
+        return result.data;
+    }
+
 }
