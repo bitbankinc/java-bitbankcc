@@ -6,7 +6,24 @@ Java library for bitbank.cc, Bitcoin exchange.
 API document: [https://docs.bitbank.cc/](https://docs.bitbank.cc/)
 
 # Install
+Add the following dependency to your project's pom.xml
+```
+<repositories>
+    <repository>
+        <id>java-bitbankcc</id>
+        <url>https://raw.github.com/bitbankinc/java-bitbankcc/mvn-repo/</url>
+    </repository>
+</repositories>
 
+<dependencies>
+    <dependency>
+        <groupId>cc.bitbank</groupId>
+        <artifactId>java-bitbankcc</artifactId>
+        <version>1.0.1</version>
+    </dependency>
+</dependencies>
+```
+Or you can use .jar file here [https://github.com/bitbankinc/java-bitbankcc/releases](https://github.com/bitbankinc/java-bitbankcc/releases)
 
 # How to use
 ## Public API
