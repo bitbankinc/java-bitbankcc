@@ -11,6 +11,7 @@ import cc.bitbank.entity.enums.OrderType;
 import cc.bitbank.entity.request.CancelBody;
 import cc.bitbank.entity.request.CancelsBody;
 import cc.bitbank.entity.request.OrderBody;
+import cc.bitbank.entity.request.WithdrawBody;
 import cc.bitbank.entity.response.*;
 import cc.bitbank.exception.BitbankException;
 import org.apache.http.Header;
@@ -282,4 +283,14 @@ public class Bitbankcc {
         return result.data;
     }
 
+    Withdraw requestWithdraw(String asset, String uuid, BigDecimal amount, String otpToken, String smsToken)
+            throws BitbankException, IOException {
+        String path = "/v1/user/request_withdrawal";
+        URIBuilder builder = getPrivateUriBuilder(path);
+
+        String json = new WithdrawBody(asset, uuid, amount, otpToken, smsToken).toJson();
+        StringEntity entity = new StringEntity(json);
+        WithdrawResponse result = doHttpPost(builder, WithdrawResponse.class, getPrivateRequestHeader(json), entity);
+        return result.data;
+    }
 }

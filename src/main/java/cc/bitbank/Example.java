@@ -1,9 +1,6 @@
 package cc.bitbank;
 
-import cc.bitbank.entity.Accounts;
-import cc.bitbank.entity.Assets;
-import cc.bitbank.entity.Order;
-import cc.bitbank.entity.Orders;
+import cc.bitbank.entity.*;
 import cc.bitbank.entity.enums.CurrencyPair;
 import cc.bitbank.entity.enums.OrderSide;
 import cc.bitbank.entity.enums.OrderType;
@@ -63,11 +60,14 @@ public class Example {
 //                System.out.println(o);
 //            }
 
-            Accounts accounts = bb.getWithdrawalAccounts("btc");
-            for(Accounts.Account a : accounts.accounts) {
-                System.out.println(a);
-            }
+//            Accounts accounts = bb.getWithdrawalAccounts("btc");
+//            for(Accounts.Account a : accounts.accounts) {
+//                System.out.println(a);
+//            }
 
+            Withdraw w = bb.requestWithdraw("btc", "XXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXX",
+                    BigDecimal.valueOf(0.005), "867005", "");
+            System.out.println(w.status);
 
 
         } catch (BitbankException e) {

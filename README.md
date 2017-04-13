@@ -76,13 +76,20 @@ for(Order o : orders.orders) {
 }
 ```
 
-#### Withdrawal Account
+#### Withdrawal Account Info
 ```
 Accounts accounts = bb.getWithdrawalAccounts("btc");
 for(Accounts.Account a : accounts.accounts) {
     System.out.println(a);
 }
 ```
+
+#### Request Withdraw
+You should set "otpToken" or "smsToken".
+```
+Withdraw w = bb.requestWithdraw("btc", "XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXX", BigDecimal.valueOf(0.005), "867005", "");
+```
+
 
 # Error Handling
 ```
