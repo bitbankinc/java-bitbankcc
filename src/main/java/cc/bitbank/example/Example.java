@@ -1,5 +1,6 @@
-package cc.bitbank;
+package cc.bitbank.example;
 
+import cc.bitbank.Bitbankcc;
 import cc.bitbank.entity.*;
 import cc.bitbank.entity.enums.CandleType;
 import cc.bitbank.entity.enums.CurrencyPair;

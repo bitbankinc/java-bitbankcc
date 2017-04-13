@@ -47,7 +47,7 @@ public class Bitbankcc {
     private String endPointPublic;
     private String endPointPrivate;
 
-    Bitbankcc() {
+    public Bitbankcc() {
         this.endPointPublic = "public.bitbank.cc";
         this.endPointPrivate = "api.bitbank.cc";
     }
@@ -165,42 +165,42 @@ public class Bitbankcc {
         }
     }
 
-    Ticker getTicker(CurrencyPair pair) throws BitbankException, IOException {
+    public Ticker getTicker(CurrencyPair pair) throws BitbankException, IOException {
         String path = "/" + pair.getCode() + "/ticker";
         URIBuilder builder = getPublicUriBuilder(path);
         TickerResponse result = doHttpGet(builder, TickerResponse.class, getPublicRequestHeader());
         return result.data;
     }
 
-    Depth getDepth(CurrencyPair pair) throws BitbankException, IOException {
+    public Depth getDepth(CurrencyPair pair) throws BitbankException, IOException {
         String path = "/" + pair.getCode() + "/depth";
         URIBuilder builder = getPublicUriBuilder(path);
         DepthResponse result = doHttpGet(builder, DepthResponse.class, getPublicRequestHeader());
         return result.data;
     }
 
-    Transactions getTransaction(CurrencyPair pair) throws BitbankException, IOException {
+    public Transactions getTransaction(CurrencyPair pair) throws BitbankException, IOException {
         String path = "/" + pair.getCode() + "/transactions";
         URIBuilder builder = getPublicUriBuilder(path);
         TransactionsResponse result = doHttpGet(builder, TransactionsResponse.class, getPublicRequestHeader());
         return result.data;
     }
 
-    Transactions getTransaction(CurrencyPair pair, String YYYYMMDD) throws BitbankException, IOException {
+    public Transactions getTransaction(CurrencyPair pair, String YYYYMMDD) throws BitbankException, IOException {
         String path = "/" + pair.getCode() + "/transactions/" + YYYYMMDD;
         URIBuilder builder = getPublicUriBuilder(path);
         TransactionsResponse result = doHttpGet(builder, TransactionsResponse.class, getPublicRequestHeader());
         return result.data;
     }
 
-    Candlestick getCandlestick(CurrencyPair pair, CandleType candleType, String YYYYMMDD) throws BitbankException, IOException {
+    public Candlestick getCandlestick(CurrencyPair pair, CandleType candleType, String YYYYMMDD) throws BitbankException, IOException {
         String path = "/" + pair.getCode() + "/candlestick/" + candleType.getCode() + "/" + YYYYMMDD;
         URIBuilder builder = getPublicUriBuilder(path);
         CandlestickResponse result = doHttpGet(builder, CandlestickResponse.class, getPublicRequestHeader());
         return result.data;
     }
 
-    Assets getAsset() throws BitbankException, IOException {
+    public Assets getAsset() throws BitbankException, IOException {
         String path = "/v1/user/assets";
         URIBuilder builder = getPrivateUriBuilder(path);
         AssetsResponse result = doHttpGet(builder, AssetsResponse.class,
@@ -208,7 +208,7 @@ public class Bitbankcc {
         return result.data;
     }
 
-    Order getOrder(CurrencyPair pair, long id) throws BitbankException, IOException {
+    public Order getOrder(CurrencyPair pair, long id) throws BitbankException, IOException {
         String path = "/v1/user/spot/order";
         List<NameValuePair> nameValuePair = new ArrayList<NameValuePair>();
         nameValuePair.add(new BasicNameValuePair("pair", pair.getCode()));
@@ -219,7 +219,7 @@ public class Bitbankcc {
         return result.data;
     }
 
-    Orders getOrders(CurrencyPair pair, long[] orderIds) throws BitbankException, IOException {
+    public Orders getOrders(CurrencyPair pair, long[] orderIds) throws BitbankException, IOException {
         String path = "/v1/user/spot/orders_info";
         URIBuilder builder = getPrivateUriBuilder(path);
 
@@ -229,7 +229,7 @@ public class Bitbankcc {
         return result.data;
     }
 
-    Order sendOrder(CurrencyPair pair, int price, BigDecimal amount, OrderSide side, OrderType type)
+    public Order sendOrder(CurrencyPair pair, int price, BigDecimal amount, OrderSide side, OrderType type)
             throws BitbankException, IOException {
         String path = "/v1/user/spot/order";
         URIBuilder builder = getPrivateUriBuilder(path);
@@ -240,7 +240,7 @@ public class Bitbankcc {
         return result.data;
     }
 
-    Order cancelOrder(CurrencyPair pair, long orderId) throws BitbankException, IOException {
+    public Order cancelOrder(CurrencyPair pair, long orderId) throws BitbankException, IOException {
         String path = "/v1/user/spot/cancel_order";
         URIBuilder builder = getPrivateUriBuilder(path);
 
@@ -250,7 +250,7 @@ public class Bitbankcc {
         return result.data;
     }
 
-    Orders cancelOrders(CurrencyPair pair, long[] orderIds) throws BitbankException, IOException {
+    public Orders cancelOrders(CurrencyPair pair, long[] orderIds) throws BitbankException, IOException {
         String path = "/v1/user/spot/cancel_orders";
         URIBuilder builder = getPrivateUriBuilder(path);
 
@@ -260,7 +260,7 @@ public class Bitbankcc {
         return result.data;
     }
 
-    Orders getActiveOrders(CurrencyPair pair, Map<String, Long> option) throws BitbankException, IOException {
+    public Orders getActiveOrders(CurrencyPair pair, Map<String, Long> option) throws BitbankException, IOException {
         String path = "/v1/user/spot/active_orders";
         List<NameValuePair> nameValuePair = new ArrayList<NameValuePair>();
         nameValuePair.add(new BasicNameValuePair("pair", pair.getCode()));
@@ -272,7 +272,7 @@ public class Bitbankcc {
         return result.data;
     }
 
-    Accounts getWithdrawalAccounts(String asset) throws BitbankException, IOException {
+    public Accounts getWithdrawalAccounts(String asset) throws BitbankException, IOException {
         String path = "/v1/user/withdrawal_account";
         List<NameValuePair> nameValuePair = new ArrayList<NameValuePair>();
         nameValuePair.add(new BasicNameValuePair("asset", asset));
@@ -283,7 +283,7 @@ public class Bitbankcc {
         return result.data;
     }
 
-    Withdraw requestWithdraw(String asset, String uuid, BigDecimal amount, String otpToken, String smsToken)
+    public Withdraw requestWithdraw(String asset, String uuid, BigDecimal amount, String otpToken, String smsToken)
             throws BitbankException, IOException {
         String path = "/v1/user/request_withdrawal";
         URIBuilder builder = getPrivateUriBuilder(path);
