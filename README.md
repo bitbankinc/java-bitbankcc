@@ -7,7 +7,7 @@ API document: [https://docs.bitbank.cc/](https://docs.bitbank.cc/)
 
 # Install
 Add the following dependency to your project's pom.xml
-```
+```xml
 <repositories>
     <repository>
         <id>java-bitbankcc</id>
@@ -30,7 +30,7 @@ Add the following dependency to your project's build.sbt
 ```
 resolvers += "bitbankinc" at "https://raw.github.com/bitbankinc/java-bitbankcc/raw/mvn-repo/"
 
-libraryDependencies  ++=  Seq(
+libraryDependencies ++= Seq(
     "cc.bitbank" % "java-bitbankcc" % "1.0.0"
 )
 
@@ -38,7 +38,7 @@ libraryDependencies  ++=  Seq(
 
 # How to use
 ## Public API
-```
+```java
 import cc.bitbank.Bitbankcc;
 import cc.bitbank.entity.*;
 import cc.bitbank.entity.enums.*;
@@ -58,18 +58,18 @@ List<Ohlcv> ohlcvs = bb.getCandlestick(CurrencyPair.BTC_JPY, CandleType._1DAY, "
 Private api requires API_KEY and API_SECRET.
 [https://bitbank.cc/account/api](https://bitbank.cc/account/api)
 
-```
+```java
 Bitbankcc bb = new Bitbankcc();
 bb.setKey("YOUR_API_KEY", "YOUR_API_SECRET");
 ```
 
 #### Assets
-```
+```java
 Assets as = bb.getAsset();
 ```
 
 #### Order/Orders Info
-```
+```java
 Order order = bb.getOrder(CurrencyPair.BTC_JPY, 90956209);
 
 long[] ids = {90956209, 90951996};
@@ -79,12 +79,12 @@ System.out.println(orders.orders[1]);
 ```
 
 #### Send New Order
-```
+```java
 Order order = bb.sendOrder(CurrencyPair.BTC_JPY, 130000, BigDecimal.valueOf(0.01), OrderSide.BUY, OrderType.LIMIT);
 ```
 
 #### Cancel Order/Orders
-```
+```java
 Order order = bb.cancelOrder(CurrencyPair.BTC_JPY, 129781978);
 
 long[] ids = {129830841, 129830734};
@@ -94,7 +94,7 @@ System.out.println(orders.orders[0]);
 
 #### Active Orders
 Option's parameter can be seen in [document page](https://docs.bitbank.cc/#!/Order/active_orders)
-```
+```java
 Map<String, Long> option = new HashMap();
 option.put("count", 1L);
 option.put("since", 1490348550380L);
@@ -105,7 +105,7 @@ for(Order o : orders.orders) {
 ```
 
 #### Withdrawal Account Info
-```
+```java
 Accounts accounts = bb.getWithdrawalAccounts("btc");
 for(Accounts.Account a : accounts.accounts) {
     System.out.println(a);
@@ -114,13 +114,13 @@ for(Accounts.Account a : accounts.accounts) {
 
 #### Request Withdraw
 You should set "otpToken" or "smsToken".
-```
+```java
 Withdraw w = bb.requestWithdraw("btc", "XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXX", BigDecimal.valueOf(0.005), "867005", "");
 ```
 
 
 # Error Handling
-```
+```java
 Bitbankcc bb = new Bitbankcc();
 try {
     bb.getTicker(CurrencyPair.BTC_JPY);
