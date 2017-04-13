@@ -259,4 +259,16 @@ public class Bitbankcc {
         return result.data;
     }
 
+    Orders getActiveOrders(CurrencyPair pair, Map<String, Long> option) throws BitbankException, IOException {
+        String path = "/v1/user/spot/active_orders";
+        List<NameValuePair> nameValuePair = new ArrayList<NameValuePair>();
+        nameValuePair.add(new BasicNameValuePair("pair", pair.getCode()));
+        for(Map.Entry<String, Long> e : option.entrySet()) {
+            nameValuePair.add(new BasicNameValuePair(e.getKey(), e.getValue().toString()));
+        }
+        URIBuilder builder = getPrivateUriBuilder(path).setParameters(nameValuePair);
+        OrdersResponse result = doHttpGet(builder, OrdersResponse.class, getPrivateRequestHeader(path, nameValuePair));
+        return result.data;
+    }
+
 }

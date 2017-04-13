@@ -40,9 +40,14 @@ bb.setKey("YOUR_API_KEY", "YOUR_API_SECRET");
 Assets as = bb.getAsset();
 ```
 
-#### Order Info
+#### Order/Orders Info
 ```
 Order order = bb.getOrder(CurrencyPair.BTC_JPY, 90956209);
+
+long[] ids = {90956209, 90951996};
+Orders orders = bb.getOrders(CurrencyPair.BTC_JPY, ids);
+System.out.println(orders.orders[0]);
+System.out.println(orders.orders[1]);
 ```
 
 #### Send New Order
@@ -57,4 +62,16 @@ Order order = bb.cancelOrder(CurrencyPair.BTC_JPY, 129781978);
 long[] ids = {129830841, 129830734};
 Orders orders = bb.cancelOrders(CurrencyPair.BTC_JPY, ids);
 System.out.println(orders.orders[0]);
+```
+
+#### Active Orders
+```
+Map<String, Long> option = new HashMap();
+option.put("count", 1L);
+option.put("since", 1490348550380L);
+// Option's parameter can be seen in [document page](https://docs.bitbank.cc/#!/Order/active_orders)
+Orders orders = bb.getActiveOrders(CurrencyPair.BTC_JPY, option);
+for(Order o : orders.orders) {
+    System.out.println(o);
+}
 ```

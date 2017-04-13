@@ -9,6 +9,8 @@ import cc.bitbank.entity.enums.OrderType;
 import cc.bitbank.exception.BitbankException;
 
 import java.math.BigDecimal;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.ResourceBundle;
 
 
@@ -46,10 +48,19 @@ public class Example {
 //            System.out.println(orders.orders[0]);
 //            System.out.println(orders.orders[1]);
 
-            long[] ids = {90956209, 90951996};
-            Orders orders = bb.getOrders(CurrencyPair.BTC_JPY, ids);
-            System.out.println(orders.orders[0]);
-            System.out.println(orders.orders[1]);
+//            long[] ids = {90956209, 90951996};
+//            Orders orders = bb.getOrders(CurrencyPair.BTC_JPY, ids);
+//            System.out.println(orders.orders[0]);
+//            System.out.println(orders.orders[1]);
+
+            Map<String, Long> option = new HashMap();
+            option.put("count", 1L);
+            option.put("since", 1490348550380L);
+            // Option's parameter can be seen https://docs.bitbank.cc/#!/Order/active_orders
+            Orders orders = bb.getActiveOrders(CurrencyPair.BTC_JPY, option);
+            for(Order o : orders.orders) {
+                System.out.println(o);
+            }
 
 
         } catch (BitbankException e) {
