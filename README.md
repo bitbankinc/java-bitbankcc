@@ -19,7 +19,7 @@ Add the following dependency to your project's pom.xml
     <dependency>
         <groupId>cc.bitbank</groupId>
         <artifactId>java-bitbankcc</artifactId>
-        <version>1.0.1</version>
+        <version>1.0.0</version>
     </dependency>
 </dependencies>
 ```
