@@ -41,8 +41,13 @@ public class Example {
 //            Order order3 = bb.cancelOrder(CurrencyPair.BTC_JPY, 129781978);
 //            System.out.println(order3);
 
-            long[] ids = {129830841, 129830734};
-            Orders orders = bb.cancelOrders(CurrencyPair.BTC_JPY, ids);
+//            long[] ids = {129830841, 129830734};
+//            Orders orders = bb.cancelOrders(CurrencyPair.BTC_JPY, ids);
+//            System.out.println(orders.orders[0]);
+//            System.out.println(orders.orders[1]);
+
+            long[] ids = {90956209, 90951996};
+            Orders orders = bb.getOrders(CurrencyPair.BTC_JPY, ids);
             System.out.println(orders.orders[0]);
             System.out.println(orders.orders[1]);
 

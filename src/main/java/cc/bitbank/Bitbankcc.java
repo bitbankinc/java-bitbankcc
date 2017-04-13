@@ -218,6 +218,16 @@ public class Bitbankcc {
         return result.data;
     }
 
+    Orders getOrders(CurrencyPair pair, long[] orderIds) throws BitbankException, IOException {
+        String path = "/v1/user/spot/orders_info";
+        URIBuilder builder = getPrivateUriBuilder(path);
+
+        String json = new CancelsBody(pair, orderIds).toJson();
+        StringEntity entity = new StringEntity(json);
+        OrdersResponse result = doHttpPost(builder, OrdersResponse.class, getPrivateRequestHeader(json), entity);
+        return result.data;
+    }
+
     Order sendOrder(CurrencyPair pair, int price, BigDecimal amount, OrderSide side, OrderType type)
             throws BitbankException, IOException {
         String path = "/v1/user/spot/order";
