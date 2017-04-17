@@ -126,7 +126,7 @@ public class Bitbankcc {
             HttpResponse response = client.execute(http);
             HttpEntity entity = response.getEntity();
             String json = EntityUtils.toString(entity);
-            System.out.println(json);
+            //System.out.println(json);
 
             JsonDecorder decorder = new JsonDecorder();
             T result = decorder.decode(json, clazz);
