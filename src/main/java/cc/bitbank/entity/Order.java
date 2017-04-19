@@ -29,6 +29,8 @@ public class Order extends Data {
     public Date orderedAt;
     @JsonProperty("canceled_at")
     public Date canceledAt;
+    @JsonProperty("executed_at")
+    public Date executedAt;
     public String status;
 
     public String toString() {
