@@ -19,7 +19,7 @@ Add the following dependency to your project's pom.xml
     <dependency>
         <groupId>cc.bitbank</groupId>
         <artifactId>java-bitbankcc</artifactId>
-        <version>1.0.1</version>
+        <version>1.0.2</version>
     </dependency>
 </dependencies>
 ```
@@ -31,7 +31,7 @@ Add the following dependency to your project's build.sbt
 resolvers += "bitbankinc" at "https://raw.githubusercontent.com/bitbankinc/java-bitbankcc/mvn-repo/"
 
 libraryDependencies ++= Seq(
-    "cc.bitbank" % "java-bitbankcc" % "1.0.1"
+    "cc.bitbank" % "java-bitbankcc" % "1.0.2"
 )
 
 ```
