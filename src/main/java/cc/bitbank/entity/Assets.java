@@ -21,6 +21,8 @@ public class Assets extends Data {
         public BigDecimal freeAmount;
         @JsonProperty("withdrawal_fee")
         public Object withdrawalFee;
+        @JsonProperty("explorer")
+        public String explorer;
 
         public String toString() {
             return "[Assets] asset " + asset + ", onhand_amount " + onhandAmount;

@@ -29,7 +29,7 @@ Or you can use .jar file here [https://github.com/bitbankinc/java-bitbankcc/rele
 Add the following dependency to your project's build.sbt
 ```
 resolvers += "bitbankinc" at "https://raw.githubusercontent.com/bitbankinc/java-bitbankcc/mvn-repo/"
-
+　
 libraryDependencies ++= Seq(
     "cc.bitbank" % "java-bitbankcc" % "1.0.2"
 )
