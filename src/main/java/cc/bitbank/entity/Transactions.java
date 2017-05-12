@@ -1,6 +1,7 @@
 package cc.bitbank.entity;
 
 import cc.bitbank.entity.enums.OrderSide;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.math.BigDecimal;
@@ -11,6 +12,7 @@ import java.util.Date;
  */
 public class Transactions extends Data {
 
+    @JsonIgnoreProperties(ignoreUnknown = true)
     public static class Transaction {
         @JsonProperty("transaction_id")
         public long transactionId;

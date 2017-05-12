@@ -2,6 +2,7 @@ package cc.bitbank.entity;
 
 import cc.bitbank.entity.enums.OrderSide;
 import cc.bitbank.entity.enums.OrderType;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.math.BigDecimal;
@@ -10,6 +11,7 @@ import java.util.Date;
 /**
  * Created by tanaka on 2017/04/12.
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Order extends Data {
     @JsonProperty("order_id")
     public long orderId;

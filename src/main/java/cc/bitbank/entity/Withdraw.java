@@ -1,5 +1,6 @@
 package cc.bitbank.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.math.BigDecimal;
@@ -8,6 +9,7 @@ import java.util.Date;
 /**
  * Created by tanaka on 2017/04/13.
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Withdraw extends Data {
 
     public String uuid;

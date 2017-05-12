@@ -1,6 +1,7 @@
 package cc.bitbank.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -12,6 +13,7 @@ import java.util.List;
  */
 public class Candlestick extends Data {
 
+    @JsonIgnoreProperties(ignoreUnknown = true)
     public static class Ohlcvs {
         public BigDecimal[][] ohlcv;
         public String type;
