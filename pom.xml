@@ -6,7 +6,7 @@
 
     <groupId>cc.bitbank</groupId>
     <artifactId>java-bitbankcc</artifactId>
-    <version>1.0.2</version>
+    <version>1.0.4</version>
     <description>Java library for bitbank.cc</description>
     <url>https://github.com/bitbankinc/java-bitbankcc</url>
 
