@@ -229,7 +229,7 @@ public class Bitbankcc {
         return result.data;
     }
 
-    public Order sendOrder(CurrencyPair pair, int price, BigDecimal amount, OrderSide side, OrderType type)
+    public Order sendOrder(CurrencyPair pair, BigDecimal price, BigDecimal amount, OrderSide side, OrderType type)
             throws BitbankException, IOException {
         String path = "/v1/user/spot/order";
         URIBuilder builder = getPrivateUriBuilder(path);

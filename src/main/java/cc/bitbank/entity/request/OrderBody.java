@@ -14,11 +14,11 @@ import java.math.BigDecimal;
 public class OrderBody {
     public String pair;
     public String amount;
-    public int price;
+    public BigDecimal price;
     public String side;
     public String type;
 
-    public OrderBody(CurrencyPair pair, BigDecimal amount, int price, OrderSide side, OrderType type) {
+    public OrderBody(CurrencyPair pair, BigDecimal amount, BigDecimal price, OrderSide side, OrderType type) {
         this.pair = pair.getCode();
         this.amount = amount.toString();
         this.price = price;
