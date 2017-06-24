@@ -5,7 +5,9 @@ package cc.bitbank.entity.enums;
  */
 
 public enum CurrencyPair {
-    BTC_JPY("btc_jpy");
+    BTC_JPY("btc_jpy"),
+    LTC_BTC("ltc_btc"),
+    XRP_JPY("xrp_jpy");
 
     private final String pair;
 

@@ -38,6 +38,9 @@ public class Example {
 
             Assets as = bb.getAsset();
             System.out.println(as.assets[0]);
+            System.out.println(as.assets[1]);
+            System.out.println(as.assets[2]);
+            System.out.println(as.assets[3]);
 
             Order order = bb.getOrder(CurrencyPair.BTC_JPY, 90956209);
             System.out.println(order);

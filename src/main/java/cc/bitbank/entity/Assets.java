@@ -1,5 +1,6 @@
 package cc.bitbank.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.math.BigDecimal;
@@ -9,6 +10,7 @@ import java.math.BigDecimal;
  */
 public class Assets extends Data {
 
+    @JsonIgnoreProperties(ignoreUnknown = true)
     public static class Asset {
         public String asset;
         @JsonProperty("amount_precision")
