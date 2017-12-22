@@ -1,18 +1,26 @@
 package cc.bitbank.example;
 
-import cc.bitbank.Bitbankcc;
-import cc.bitbank.entity.*;
-import cc.bitbank.entity.enums.CandleType;
-import cc.bitbank.entity.enums.CurrencyPair;
-import cc.bitbank.entity.enums.OrderSide;
-import cc.bitbank.entity.enums.OrderType;
-import cc.bitbank.exception.BitbankException;
-
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
+
+import cc.bitbank.Bitbankcc;
+import cc.bitbank.entity.Accounts;
+import cc.bitbank.entity.Assets;
+import cc.bitbank.entity.Candlestick;
+import cc.bitbank.entity.Depth;
+import cc.bitbank.entity.Order;
+import cc.bitbank.entity.Orders;
+import cc.bitbank.entity.Ticker;
+import cc.bitbank.entity.Transactions;
+import cc.bitbank.entity.Withdraw;
+import cc.bitbank.entity.enums.CandleType;
+import cc.bitbank.entity.enums.CurrencyPair;
+import cc.bitbank.entity.enums.OrderSide;
+import cc.bitbank.entity.enums.OrderType;
+import cc.bitbank.exception.BitbankException;
 
 
 /**
@@ -60,7 +68,7 @@ public class Example {
             System.out.println(orders2.orders[0]);
             System.out.println(orders2.orders[1]);
 
-            Map<String, Long> option = new HashMap();
+			Map<String, Long> option = new HashMap<String, Long>();
             option.put("count", 1L);
             option.put("since", 1490348550380L);
             // Option's parameter can be seen https://docs.bitbank.cc/#!/Order/active_orders
