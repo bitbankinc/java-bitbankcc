@@ -12,9 +12,9 @@ import java.util.Date;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Depth extends Data {
 
-    public BigDecimal[][] asks;
-    public BigDecimal[][] bids;
-    public Date timestamp;
+    private BigDecimal[][] asks;
+    private BigDecimal[][] bids;
+    private Date timestamp;
 
     public Depth() {}
 
@@ -22,6 +22,18 @@ public class Depth extends Data {
         this.asks = asks;
         this.bids = bids;
         this.timestamp = timestamp;
+    }
+
+    public BigDecimal[][] getAsks() {
+        return asks;
+    }
+
+    public BigDecimal[][] getBids() {
+        return bids;
+    }
+
+    public Date getTimestamp() {
+        return timestamp;
     }
 
     @Override
