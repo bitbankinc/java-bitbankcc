@@ -2,18 +2,18 @@ package cc.bitbank;
 
 
 
-import cc.bitbank.deserializer.JsonDecorder;
-import cc.bitbank.entity.*;
-import cc.bitbank.entity.enums.CandleType;
-import cc.bitbank.entity.enums.CurrencyPair;
-import cc.bitbank.entity.enums.OrderSide;
-import cc.bitbank.entity.enums.OrderType;
-import cc.bitbank.entity.request.CancelBody;
-import cc.bitbank.entity.request.CancelsBody;
-import cc.bitbank.entity.request.OrderBody;
-import cc.bitbank.entity.request.WithdrawBody;
-import cc.bitbank.entity.response.*;
-import cc.bitbank.exception.BitbankException;
+import java.io.IOException;
+import java.math.BigDecimal;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+
+import javax.crypto.Mac;
+import javax.crypto.spec.SecretKeySpec;
+
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -30,13 +30,36 @@ import org.apache.http.message.BasicHeader;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 
-import javax.crypto.Mac;
-import javax.crypto.spec.SecretKeySpec;
-import java.io.IOException;
-import java.math.BigDecimal;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.*;
+import cc.bitbank.deserializer.JsonDecorder;
+import cc.bitbank.entity.Accounts;
+import cc.bitbank.entity.Assets;
+import cc.bitbank.entity.Candlestick;
+import cc.bitbank.entity.Depth;
+import cc.bitbank.entity.Order;
+import cc.bitbank.entity.Orders;
+import cc.bitbank.entity.Ticker;
+import cc.bitbank.entity.Transactions;
+import cc.bitbank.entity.Withdraw;
+import cc.bitbank.entity.enums.CandleType;
+import cc.bitbank.entity.enums.CurrencyPair;
+import cc.bitbank.entity.enums.OrderSide;
+import cc.bitbank.entity.enums.OrderType;
+import cc.bitbank.entity.request.CancelBody;
+import cc.bitbank.entity.request.CancelsBody;
+import cc.bitbank.entity.request.OrderBody;
+import cc.bitbank.entity.request.WithdrawBody;
+import cc.bitbank.entity.response.AccountsResponse;
+import cc.bitbank.entity.response.AssetsResponse;
+import cc.bitbank.entity.response.CandlestickResponse;
+import cc.bitbank.entity.response.DepthResponse;
+import cc.bitbank.entity.response.ErrorCodeResponse;
+import cc.bitbank.entity.response.OrderResponse;
+import cc.bitbank.entity.response.OrdersResponse;
+import cc.bitbank.entity.response.Response;
+import cc.bitbank.entity.response.TickerResponse;
+import cc.bitbank.entity.response.TransactionsResponse;
+import cc.bitbank.entity.response.WithdrawResponse;
+import cc.bitbank.exception.BitbankException;
 
 /**
  * Created by tanaka on 2017/04/10.
@@ -121,7 +144,8 @@ public class Bitbankcc {
         }
     }
 
-    private <T extends Response> T httpExecute(HttpClient client, HttpRequestBase http, Class<T> clazz) throws BitbankException, IOException {
+	private <T extends Response<?>> T httpExecute(HttpClient client, HttpRequestBase http, Class<T> clazz)
+			throws BitbankException, IOException {
         try {
             HttpResponse response = client.execute(http);
             HttpEntity entity = response.getEntity();
@@ -142,7 +166,8 @@ public class Bitbankcc {
         }
     }
 
-    private <T extends Response> T doHttpGet(URIBuilder builder, Class<T> clazz, List<Header> header) throws BitbankException, IOException {
+	private <T extends Response<?>> T doHttpGet(URIBuilder builder, Class<T> clazz, List<Header> header)
+			throws BitbankException, IOException {
         try {
             URI uri = builder.build();
             HttpGet httpGet = new HttpGet(uri);
@@ -153,7 +178,8 @@ public class Bitbankcc {
         }
     }
 
-    private <T extends Response> T doHttpPost(URIBuilder builder, Class<T> clazz, List<Header> header, StringEntity entityBody) throws BitbankException, IOException {
+	private <T extends Response<?>> T doHttpPost(URIBuilder builder, Class<T> clazz, List<Header> header,
+			StringEntity entityBody) throws BitbankException, IOException {
         try {
             URI uri = builder.build();
             HttpPost httpPost = new HttpPost(uri);

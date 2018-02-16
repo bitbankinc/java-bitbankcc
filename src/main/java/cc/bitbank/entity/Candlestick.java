@@ -1,12 +1,12 @@
 package cc.bitbank.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 /**
  * Created by tanaka on 2017/04/12.
@@ -48,7 +48,7 @@ public class Candlestick extends Data {
         }
 
         public List<Ohlcv> getOhlcvList() {
-            List<Ohlcv> list = new ArrayList();
+			List<Ohlcv> list = new ArrayList<Ohlcv>();
             for(BigDecimal[] i : this.ohlcv) {
                 list.add(
                     new Ohlcv(i[0].intValue(), i[1].intValue(), i[2].intValue(), i[3].intValue(),

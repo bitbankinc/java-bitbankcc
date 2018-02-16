@@ -1,17 +1,18 @@
 package cc.bitbank.deserializer;
 
-import cc.bitbank.entity.response.Response;
-import cc.bitbank.exception.BitbankException;
+import java.io.IOException;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import java.io.IOException;
+import cc.bitbank.entity.response.Response;
+import cc.bitbank.exception.BitbankException;
 
 /**
  * Created by tanaka on 2017/04/11.
  */
 public class JsonDecorder {
 
-    public <T extends Response> T decode(String json, Class<T> clazz) throws BitbankException {
+	public <T extends Response<?>> T decode(String json, Class<T> clazz) throws BitbankException {
         ObjectMapper mapper = new ObjectMapper();
         try {
             T result = mapper.readValue(json, clazz);
