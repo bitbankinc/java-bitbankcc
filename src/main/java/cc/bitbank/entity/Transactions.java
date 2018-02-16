@@ -15,20 +15,40 @@ public class Transactions extends Data {
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static class Transaction {
         @JsonProperty("transaction_id")
-        public long transactionId;
+        private long transactionId;
 
-        public OrderSide side;
+        private OrderSide side;
 
-        public int price;
+        private String price;
 
-        public BigDecimal amount;
+        private String amount;
 
         @JsonProperty("executed_at")
-        public Date executedAt;
+        private Date executedAt;
 
         public String toString() {
             return "[Transaction] transaction_id " + transactionId + ", side " + side.getCode() + ", price " + price + ", amount " +
                     amount + ", executed_at " + executedAt.toString();
+        }
+
+        public Long getTransactionId() {
+            return transactionId;
+        }
+
+        public OrderSide getSide() {
+            return side;
+        }
+
+        public BigDecimal getPrice() {
+            return new BigDecimal(price);
+        }
+
+        public BigDecimal getAmount() {
+            return new BigDecimal(amount);
+        }
+
+        public Date getExecutedAt() {
+            return executedAt;
         }
     }
 
@@ -37,5 +57,9 @@ public class Transactions extends Data {
     public Transactions () {}
     public Transactions (Transaction[] transactions) {
         this.transactions = transactions;
+    }
+
+    public Transaction[] getTransactions() {
+        return transactions;
     }
 }
