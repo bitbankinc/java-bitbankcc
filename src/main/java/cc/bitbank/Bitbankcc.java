@@ -69,10 +69,22 @@ public class Bitbankcc {
     private String apiSecret = "";
     private String endPointPublic;
     private String endPointPrivate;
+    private String httpScheme;
+    
+    private final String PUBLC_ENDPOINT = "public.bitbank.cc";
+    private final String PRIVATE_ENDPOINT = "api.bitbank.cc";
+    private final String DEFAULT_HTTP_SCHEME = "https";
 
     public Bitbankcc() {
-        this.endPointPublic = "public.bitbank.cc";
-        this.endPointPrivate = "api.bitbank.cc";
+        this.endPointPublic = PUBLC_ENDPOINT;
+        this.endPointPrivate = PRIVATE_ENDPOINT;
+        this.httpScheme = DEFAULT_HTTP_SCHEME;
+    }
+    
+    public Bitbankcc(String endPointPublic, String endPointPrivate, String httpScheme) {
+    	this.endPointPublic = endPointPublic;
+    	this.endPointPrivate = endPointPrivate;
+    	this.httpScheme = httpScheme;
     }
 
     public Bitbankcc setKey(String key, String secret) {
@@ -83,14 +95,14 @@ public class Bitbankcc {
 
     private URIBuilder getPublicUriBuilder(String path) {
         URIBuilder builder = new URIBuilder();
-        return builder.setScheme("https")
+        return builder.setScheme(httpScheme)
                 .setHost(this.endPointPublic)
                 .setPath(path);
     }
 
     private URIBuilder getPrivateUriBuilder(String path) {
         URIBuilder builder = new URIBuilder();
-        return builder.setScheme("https")
+        return builder.setScheme(httpScheme)
                 .setHost(this.endPointPrivate)
                 .setPath(path);
     }
