@@ -38,6 +38,11 @@ public class Depth extends Data {
 
     @Override
     public String toString() {
-        return "[Depth] " + "ask " + this.asks[0][0] + ", ... bids " + this.bids[0][0] + ", timestamp " + this.timestamp.getTime();
+        return "[Depth] " + "ask " + extract(asks) + ", ... bids " + extract(bids) + ", timestamp " + (timestamp == null ? null : timestamp.getTime());
     }
+
+    private <T> T extract(T[][] input) {
+        return input == null ? null : input.length == 0 ? null : input[0] == null ? null : input[0].length == 0 ? null : input[0][0];
+    }
+
 }
