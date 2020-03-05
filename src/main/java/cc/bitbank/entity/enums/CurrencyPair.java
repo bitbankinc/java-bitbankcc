@@ -6,8 +6,11 @@ package cc.bitbank.entity.enums;
 
 public enum CurrencyPair {
     BTC_JPY("btc_jpy"),
+    LTC_JPY("ltc_jpy"),
     LTC_BTC("ltc_btc"),
     XRP_JPY("xrp_jpy"),
+    XRP_BTC("xrp_btc"),
+    ETH_JPY("eth_jpy"),
     ETH_BTC("eth_btc"),
     MONA_JPY("mona_jpy"),
     MONA_BTC("mona_btc"),
