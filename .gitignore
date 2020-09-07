@@ -2,3 +2,6 @@ target/
 .idea/
 java-bitbankcc.iml
 src/main/resources/example.properties
+.classpath
+.settings/
+.project
