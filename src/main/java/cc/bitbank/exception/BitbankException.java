@@ -5,23 +5,33 @@ package cc.bitbank.exception;
  */
 public class BitbankException extends Exception {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -668176882481871028L;
+    /**
+     *
+     */
+    private static final long serialVersionUID = -668176882481871028L;
 
-	public int code;
+    public static final int DEFAULT_CODE = 0;
+
+    public final int code;
 
     public BitbankException() {
-        super();
-        this.code = 0;
+        this(DEFAULT_CODE);
     }
 
     public BitbankException(int code) {
-        this.code = code;
+        this(code, String.valueOf(code));
     }
 
     public BitbankException(String message) {
-        super(message);
+        this(DEFAULT_CODE, message);
     }
+
+    public BitbankException(int code, String message) {
+
+        super(message);
+
+        this.code = code;
+
+    }
+
 }
