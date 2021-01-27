@@ -17,7 +17,9 @@ public enum CurrencyPair {
     BCC_JPY("bcc_jpy"),
     BCC_BTC("bcc_btc"),
     XLM_JPY("xlm_jpy"),
-    XLM_BTC("xlm_btc");
+    XLM_BTC("xlm_btc"),
+    QTUM_JPY("qtum_jpy"),
+    QTUM_BTC("qtum_btc");
 
     private final String pair;
 
