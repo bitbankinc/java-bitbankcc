@@ -65,6 +65,7 @@ import cc.bitbank.exception.BitbankException;
  * Created by tanaka on 2017/04/10.
  */
 public class Bitbankcc {
+    private static final int SUCCESS = 1;
     private String apiKey = "";
     private String apiSecret = "";
     private String endPointPublic;
@@ -154,7 +155,7 @@ public class Bitbankcc {
 
             JsonDecorder decorder = new JsonDecorder();
             T result = decorder.decode(json, clazz);
-            if (result == null) {
+            if (result == null || result.success != SUCCESS) {
                 ErrorCodeResponse error = decorder.decode(json, ErrorCodeResponse.class);
                 throw new BitbankException(error.data.code);
             } else {

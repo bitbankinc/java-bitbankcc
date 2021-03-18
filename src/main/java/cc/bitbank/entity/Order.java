@@ -36,7 +36,7 @@ public class Order extends Data {
     public String status;
 
     public String toString() {
-        return "[Order] orderId " + orderId + ", pair " + pair + ", side " + side.getCode() + ", type " + type +
+        return "[Order] orderId " + orderId + ", pair " + pair + ", side " + side + ", type " + type +
                 ", remainingAmount " + remainingAmount + ", price " + price + ", status " + status;
     }
 }
