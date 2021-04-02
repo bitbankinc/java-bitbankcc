@@ -25,10 +25,14 @@ public class Order extends Data {
     @JsonProperty("executed_amount")
     public BigDecimal executedAmount;
     public BigDecimal price;
+    @JsonProperty("post_only")
+    public boolean postOnly;
     @JsonProperty("average_price")
     public BigDecimal averagePrice;
     @JsonProperty("ordered_at")
     public Date orderedAt;
+    @JsonProperty("expire_at")
+    public Date expireAt;
     @JsonProperty("canceled_at")
     public Date canceledAt;
     @JsonProperty("executed_at")
@@ -36,7 +40,7 @@ public class Order extends Data {
     public String status;
 
     public String toString() {
-        return "[Order] orderId " + orderId + ", pair " + pair + ", side " + side.getCode() + ", type " + type +
+        return "[Order] orderId " + orderId + ", pair " + pair + ", side " + side + ", type " + type +
                 ", remainingAmount " + remainingAmount + ", price " + price + ", status " + status;
     }
 }

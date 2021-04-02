@@ -27,8 +27,8 @@ public class Transactions extends Data {
         private Date executedAt;
 
         public String toString() {
-            return "[Transaction] transaction_id " + transactionId + ", side " + side.getCode() + ", price " + price + ", amount " +
-                    amount + ", executed_at " + executedAt.toString();
+            return "[Transaction] transaction_id " + transactionId + ", side " + side + ", price " + price + ", amount " +
+                    amount + ", executed_at " + executedAt;
         }
 
         public Long getTransactionId() {

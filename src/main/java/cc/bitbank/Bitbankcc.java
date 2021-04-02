@@ -65,6 +65,7 @@ import cc.bitbank.exception.BitbankException;
  * Created by tanaka on 2017/04/10.
  */
 public class Bitbankcc {
+    private static final int SUCCESS = 1;
     private String apiKey = "";
     private String apiSecret = "";
     private String endPointPublic;
@@ -154,7 +155,7 @@ public class Bitbankcc {
 
             JsonDecorder decorder = new JsonDecorder();
             T result = decorder.decode(json, clazz);
-            if (result == null) {
+            if (result == null || result.success != SUCCESS) {
                 ErrorCodeResponse error = decorder.decode(json, ErrorCodeResponse.class);
                 throw new BitbankException(error.data.code);
             } else {
@@ -255,12 +256,18 @@ public class Bitbankcc {
         return result.data;
     }
 
+    // for source-level compatibility, market order, etc.
     public Order sendOrder(CurrencyPair pair, BigDecimal price, BigDecimal amount, OrderSide side, OrderType type)
+        throws BitbankException, IOException {
+        return sendOrder(pair, price, amount, side, type, false);
+    }
+
+    public Order sendOrder(CurrencyPair pair, BigDecimal price, BigDecimal amount, OrderSide side, OrderType type, boolean postOnly)
             throws BitbankException, IOException {
         String path = "/v1/user/spot/order";
         URIBuilder builder = getPrivateUriBuilder(path);
 
-        String json = new OrderBody(pair, amount, price, side, type).toJson();
+        String json = new OrderBody(pair, amount, price, side, type, postOnly).toJson();
         StringEntity entity = new StringEntity(json);
         OrderResponse result = doHttpPost(builder, OrderResponse.class, getPrivateRequestHeader(json), entity);
         return result.data;
