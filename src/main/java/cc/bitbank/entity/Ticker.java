@@ -14,6 +14,7 @@ public class Ticker extends Data {
     public BigDecimal buy;
     public BigDecimal high;
     public BigDecimal low;
+    public BigDecimal open;
     public BigDecimal last;
     public BigDecimal vol;
     public Date timestamp;
@@ -21,6 +22,6 @@ public class Ticker extends Data {
     @Override
     public String toString() {
         return "[Ticker] buy " + buy + ", sell " + sell + ", high " + high + ", low " + low +
-                ", last " + last + ", vol " + vol + ", timestamp " + timestamp;
+                ", open " + open + ", last " + last + ", vol " + vol + ", timestamp " + timestamp;
     }
 }
