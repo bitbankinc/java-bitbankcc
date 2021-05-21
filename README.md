@@ -11,7 +11,7 @@ Add the following dependency to your project's pom.xml
 <repositories>
     <repository>
         <id>java-bitbankcc</id>
-        <url>https://raw.github.com/bitbankinc/java-bitbankcc/mvn-repo/</url>
+        <url>https://github.com/bitbankinc/java-bitbankcc/tree/mvn-repo/</url>
     </repository>
 </repositories>
 
@@ -19,7 +19,7 @@ Add the following dependency to your project's pom.xml
     <dependency>
         <groupId>cc.bitbank</groupId>
         <artifactId>java-bitbankcc</artifactId>
-        <version>1.1.0</version>
+        <version>2.1.0</version>
     </dependency>
 </dependencies>
 ```
