@@ -21,7 +21,9 @@ public enum CurrencyPair {
     QTUM_JPY("qtum_jpy"),
     QTUM_BTC("qtum_btc"),
     BAT_JPY("bat_jpy"),
-    BAT_BTC("bat_btc");
+    BAT_BTC("bat_btc"),
+    OMG_JPY("omg_jpy"),
+    OMG_BTC("omg_btc");
 
     private final String pair;
 
