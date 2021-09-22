@@ -20,15 +20,18 @@ public class OrderBody {
     public String type;
     @JsonProperty("post_only")
     public boolean postOnly;
+    @JsonProperty("trigger_price")
+    public BigDecimal triggerPrice;
 
     public OrderBody(CurrencyPair pair, BigDecimal amount, BigDecimal price, OrderSide side, OrderType type,
-            boolean postOnly) {
+            boolean postOnly, BigDecimal triggerPrice) {
         this.pair = pair.getCode();
         this.amount = amount.toString();
         this.price = price;
         this.side = side.getCode();
         this.type = type.getCode();
         this.postOnly = postOnly;
+        this.triggerPrice = triggerPrice;
     }
 
     public String toJson() {
