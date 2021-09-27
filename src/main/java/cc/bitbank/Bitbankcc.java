@@ -259,15 +259,25 @@ public class Bitbankcc {
     // for source-level compatibility, market order, etc.
     public Order sendOrder(CurrencyPair pair, BigDecimal price, BigDecimal amount, OrderSide side, OrderType type)
         throws BitbankException, IOException {
-        return sendOrder(pair, price, amount, side, type, false);
+        return sendOrder(pair, price, amount, side, type, false, null);
     }
 
     public Order sendOrder(CurrencyPair pair, BigDecimal price, BigDecimal amount, OrderSide side, OrderType type, boolean postOnly)
-            throws BitbankException, IOException {
+        throws BitbankException, IOException {
+        return sendOrder(pair, price, amount, side, type, postOnly, null);
+    }
+
+    public Order sendOrder(CurrencyPair pair, BigDecimal price, BigDecimal amount, OrderSide side, OrderType type, BigDecimal triggerPrice)
+        throws BitbankException, IOException {
+        return sendOrder(pair, price, amount, side, type, false, triggerPrice);
+    }
+
+    public Order sendOrder(CurrencyPair pair, BigDecimal price, BigDecimal amount, OrderSide side, OrderType type, boolean postOnly,
+            BigDecimal triggerPrice) throws BitbankException, IOException {
         String path = "/v1/user/spot/order";
         URIBuilder builder = getPrivateUriBuilder(path);
 
-        String json = new OrderBody(pair, amount, price, side, type, postOnly).toJson();
+        String json = new OrderBody(pair, amount, price, side, type, postOnly, triggerPrice).toJson();
         StringEntity entity = new StringEntity(json);
         OrderResponse result = doHttpPost(builder, OrderResponse.class, getPrivateRequestHeader(json), entity);
         return result.data;

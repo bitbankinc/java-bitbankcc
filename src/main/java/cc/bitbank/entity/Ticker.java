@@ -22,6 +22,6 @@ public class Ticker extends Data {
     @Override
     public String toString() {
         return "[Ticker] buy " + buy + ", sell " + sell + ", high " + high + ", low " + low +
-                ", open " + open + ", last " + last + ", vol " + vol + ", timestamp " + timestamp;
+            ", open " + open + ", last " + last + ", vol " + vol + ", timestamp " + timestamp;
     }
 }

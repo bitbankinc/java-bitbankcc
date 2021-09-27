@@ -29,6 +29,8 @@ public class Order extends Data {
     public boolean postOnly;
     @JsonProperty("average_price")
     public BigDecimal averagePrice;
+    @JsonProperty("trigger_price")
+    public BigDecimal triggerPrice;
     @JsonProperty("ordered_at")
     public Date orderedAt;
     @JsonProperty("expire_at")
@@ -37,6 +39,8 @@ public class Order extends Data {
     public Date canceledAt;
     @JsonProperty("executed_at")
     public Date executedAt;
+    @JsonProperty("triggered_at")
+    public Date triggeredAt;
     public String status;
 
     public String toString() {
