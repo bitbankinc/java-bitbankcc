@@ -10,7 +10,9 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 @JsonDeserialize(using = OrderTypeDeserializer.class)
 public enum OrderType {
     LIMIT("limit"),
-    MARKET("market");
+    MARKET("market"),
+    STOP("stop"),
+    STOP_LIMIT("stop_limit");
 
     private final String type;
 
