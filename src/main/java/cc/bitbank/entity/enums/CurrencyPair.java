@@ -23,7 +23,9 @@ public enum CurrencyPair {
     BAT_JPY("bat_jpy"),
     BAT_BTC("bat_btc"),
     OMG_JPY("omg_jpy"),
-    OMG_BTC("omg_btc");
+    OMG_BTC("omg_btc"),
+    XYM_JPY("xym_jpy"),
+    XYM_BTC("xym_btc");
 
     private final String pair;
 
