@@ -27,7 +27,9 @@ public enum CurrencyPair {
     XYM_JPY("xym_jpy"),
     XYM_BTC("xym_btc"),
     LINK_JPY("link_jpy"),
-    LINK_BTC("link_btc");
+    LINK_BTC("link_btc"),
+    MKR_JPY("mkr_jpy"),
+    MKR_BTC("mkr_btc");
 
 
     private final String pair;
