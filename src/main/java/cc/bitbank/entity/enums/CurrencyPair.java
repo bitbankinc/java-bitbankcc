@@ -31,7 +31,9 @@ public enum CurrencyPair {
     MKR_JPY("mkr_jpy"),
     MKR_BTC("mkr_btc"),
     BOBA_JPY("boba_jpy"),
-    BOBA_BTC("boba_btc");
+    BOBA_BTC("boba_btc"),
+    ENJ_JPY("enj_jpy"),
+    ENJ_BTC("enj_btc");
 
 
     private final String pair;
