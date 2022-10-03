@@ -38,7 +38,8 @@ public enum CurrencyPair {
     MATIC_BTC("matic_btc"),
     DOT_JPY("dot_jpy"),
     DOGE_JPY("doge_jpy"),
-    ASTR_JPY("astr_jpy");
+    ASTR_JPY("astr_jpy"),
+    ADA_JPY("ada_jpy");
 
     private final String pair;
 
