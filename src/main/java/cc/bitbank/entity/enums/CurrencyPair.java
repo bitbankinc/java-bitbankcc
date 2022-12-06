@@ -40,7 +40,8 @@ public enum CurrencyPair {
     DOGE_JPY("doge_jpy"),
     ASTR_JPY("astr_jpy"),
     ADA_JPY("ada_jpy"),
-    AVAX_JPY("avax_jpy");
+    AVAX_JPY("avax_jpy"),
+    AXS_JPY("axs_jpy");
 
     private final String pair;
 
