@@ -34,12 +34,14 @@ import cc.bitbank.deserializer.JsonDecorder;
 import cc.bitbank.entity.Accounts;
 import cc.bitbank.entity.Assets;
 import cc.bitbank.entity.Candlestick;
+import cc.bitbank.entity.DepositHistory;
 import cc.bitbank.entity.Depth;
 import cc.bitbank.entity.Order;
 import cc.bitbank.entity.Orders;
 import cc.bitbank.entity.Ticker;
 import cc.bitbank.entity.Transactions;
 import cc.bitbank.entity.Withdraw;
+import cc.bitbank.entity.WithdrawalHistory;
 import cc.bitbank.entity.enums.CandleType;
 import cc.bitbank.entity.enums.CurrencyPair;
 import cc.bitbank.entity.enums.OrderSide;
@@ -51,6 +53,7 @@ import cc.bitbank.entity.request.WithdrawBody;
 import cc.bitbank.entity.response.AccountsResponse;
 import cc.bitbank.entity.response.AssetsResponse;
 import cc.bitbank.entity.response.CandlestickResponse;
+import cc.bitbank.entity.response.DepositHistoryResponse;
 import cc.bitbank.entity.response.DepthResponse;
 import cc.bitbank.entity.response.ErrorCodeResponse;
 import cc.bitbank.entity.response.OrderResponse;
@@ -59,6 +62,7 @@ import cc.bitbank.entity.response.Response;
 import cc.bitbank.entity.response.TickerResponse;
 import cc.bitbank.entity.response.TransactionsResponse;
 import cc.bitbank.entity.response.WithdrawResponse;
+import cc.bitbank.entity.response.WithdrawalHistoryResponse;
 import cc.bitbank.exception.BitbankException;
 
 /**
@@ -315,6 +319,24 @@ public class Bitbankcc {
         return result.data;
     }
 
+    public DepositHistory getDepositHistory(String asset) throws BitbankException, IOException {
+        return getDepositHistory(asset, Collections.emptyMap());
+    }
+
+    public DepositHistory getDepositHistory(String asset, Map<String, String> option) throws BitbankException, IOException {
+        String path = "/v1/user/deposit_history";
+        List<NameValuePair> nameValuePair = new ArrayList<NameValuePair>();
+        nameValuePair.add(new BasicNameValuePair("asset", asset));
+        for(Map.Entry<String, String> e : option.entrySet()) {
+            nameValuePair.add(new BasicNameValuePair(e.getKey(), e.getValue().toString()));
+        }
+
+        URIBuilder builder = getPrivateUriBuilder(path).addParameters(nameValuePair);
+        DepositHistoryResponse result = doHttpGet(builder, DepositHistoryResponse.class,
+                getPrivateRequestHeader(path, nameValuePair));
+        return result.data;
+    }
+
     public Accounts getWithdrawalAccounts(String asset) throws BitbankException, IOException {
         String path = "/v1/user/withdrawal_account";
         List<NameValuePair> nameValuePair = new ArrayList<NameValuePair>();
@@ -334,6 +356,24 @@ public class Bitbankcc {
         String json = new WithdrawBody(asset, uuid, amount, otpToken, smsToken).toJson();
         StringEntity entity = new StringEntity(json);
         WithdrawResponse result = doHttpPost(builder, WithdrawResponse.class, getPrivateRequestHeader(json), entity);
+        return result.data;
+    }
+
+    public WithdrawalHistory getWithdrawalHistory(String asset) throws BitbankException, IOException {
+        return getWithdrawalHistory(asset, Collections.emptyMap());
+    }
+
+    public WithdrawalHistory getWithdrawalHistory(String asset, Map<String, String> option) throws BitbankException, IOException {
+        String path = "/v1/user/withdrawal_history";
+        List<NameValuePair> nameValuePair = new ArrayList<NameValuePair>();
+        nameValuePair.add(new BasicNameValuePair("asset", asset));
+        for(Map.Entry<String, String> e : option.entrySet()) {
+            nameValuePair.add(new BasicNameValuePair(e.getKey(), e.getValue().toString()));
+        }
+
+        URIBuilder builder = getPrivateUriBuilder(path).addParameters(nameValuePair);
+        WithdrawalHistoryResponse result = doHttpGet(builder, WithdrawalHistoryResponse.class,
+                getPrivateRequestHeader(path, nameValuePair));
         return result.data;
     }
 }

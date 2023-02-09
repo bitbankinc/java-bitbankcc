@@ -10,12 +10,15 @@ import cc.bitbank.Bitbankcc;
 import cc.bitbank.entity.Accounts;
 import cc.bitbank.entity.Assets;
 import cc.bitbank.entity.Candlestick;
+import cc.bitbank.entity.Deposit;
+import cc.bitbank.entity.DepositHistory;
 import cc.bitbank.entity.Depth;
 import cc.bitbank.entity.Order;
 import cc.bitbank.entity.Orders;
 import cc.bitbank.entity.Ticker;
 import cc.bitbank.entity.Transactions;
 import cc.bitbank.entity.Withdraw;
+import cc.bitbank.entity.WithdrawalHistory;
 import cc.bitbank.entity.enums.CandleType;
 import cc.bitbank.entity.enums.CurrencyPair;
 import cc.bitbank.entity.enums.OrderSide;
@@ -77,6 +80,14 @@ public class Example {
                 System.out.println(o);
             }
 
+            Map<String, String> option2 = new HashMap<String, String>();
+            option2.put("count", "1");
+            option2.put("since", "1490348550380");
+            DepositHistory history = bb.getDepositHistory("btc", option2);
+            for(Deposit d : history.deposits) {
+                System.out.println(d);
+            }
+
             Accounts accounts = bb.getWithdrawalAccounts("btc");
             for(Accounts.Account a : accounts.accounts) {
                 System.out.println(a);
@@ -85,6 +96,14 @@ public class Example {
             Withdraw w = bb.requestWithdraw("btc", "XXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXX",
                     BigDecimal.valueOf(0.005), "867005", "");
             System.out.println(w);
+
+            Map<String, String> option3 = new HashMap<String, String>();
+            option3.put("count", "1");
+            option3.put("since", "1490348550380");
+            WithdrawalHistory history2 = bb.getWithdrawalHistory("btc", option3);
+            for(Withdraw w2 : history2.withdrawals) {
+                System.out.println(w2);
+            }
 
         } catch (BitbankException e) {
             System.out.println(e.code);
