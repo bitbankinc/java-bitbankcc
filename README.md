@@ -93,14 +93,26 @@ System.out.println(orders.orders[0]);
 ```
 
 #### Active Orders
-Option's parameter can be seen in [document page](https://docs.bitbank.cc/#!/Order/active_orders)
+Option's parameter can be seen in [document page](https://github.com/bitbankinc/bitbank-api-docs/blob/master/rest-api.md#fetch-active-orders)
 ```java
-Map<String, Long> option = new HashMap();
+Map<String, Long> option = new HashMap<String, Long>();
 option.put("count", 1L);
 option.put("since", 1490348550380L);
 Orders orders = bb.getActiveOrders(CurrencyPair.BTC_JPY, option);
 for(Order o : orders.orders) {
     System.out.println(o);
+}
+```
+
+#### Deposit History
+Option's parameter can be seen in [document page](https://github.com/bitbankinc/bitbank-api-docs/blob/master/rest-api.md#fetch-deposit-history)
+```java
+Map<String, String> option = new HashMap<String, String>();
+option.put("count", "1");
+option.put("since", "1490348550380");
+DepositHistory history = bb.getDepositHistory("btc", option);
+for(Deposit d : history.deposits) {
+    System.out.println(d);
 }
 ```
 
@@ -116,6 +128,18 @@ for(Accounts.Account a : accounts.accounts) {
 You should set "otpToken" or "smsToken".
 ```java
 Withdraw w = bb.requestWithdraw("btc", "XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXX", BigDecimal.valueOf(0.005), "867005", "");
+```
+
+#### Withdrawal History
+Option's parameter can be seen in [document page](https://github.com/bitbankinc/bitbank-api-docs/blob/master/rest-api.md#fetch-withdrawal-history)
+```java
+Map<String, String> option = new HashMap<String, String>();
+option.put("count", "1");
+option.put("since", "1490348550380");
+WithdrawalHistory history = bb.getWithdrawalHistory("btc", option);
+for(Withdraw w : history.withdrawals) {
+    System.out.println(w);
+}
 ```
 
 

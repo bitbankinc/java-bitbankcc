@@ -18,15 +18,45 @@ public class Withdraw extends Data {
     public String accountUuid;
     public BigDecimal amount;
     public BigDecimal fee;
+
     public String label;
     public String address;
+    /** destinationTag is actually Integer or String, depending on asset. */
+    @JsonProperty("destination_tag")
+    public Object destinationTag;
     public String txid;
+
+    @JsonProperty("bank_name")
+    public String bankName;
+    @JsonProperty("branch_name")
+    public String branchName;
+    @JsonProperty("account_type")
+    public String accountType;
+    @JsonProperty("account_number")
+    public String accountNumber;
+    @JsonProperty("account_owner")
+    public String accountOwner;
+
     public String status;
     @JsonProperty("requested_at")
     public Date requestedAt;
 
     public String toString() {
-        return "[Withdraw] uuid " + uuid + ", asset " + asset + ", account_uuid " + accountUuid +
-                ", amount " + amount + ", fee " + fee + ", label " + label + ", address " + address + ", status" + status;
+        String addrinfo;
+        if (address != null) {
+            // asset must be crypto
+            addrinfo = ", label " + label + ", address " + address + ", destination_tag " + destinationTag + ", txid "
+                    + txid;
+        } else if (accountNumber != null) {
+            // asset must be fiat
+            addrinfo = ", bank_name " + bankName + ", branch_name " + branchName + ", account_type " + accountType
+                    + ", account_number " + accountNumber + ", account_owner " + accountOwner;
+        } else {
+            // ?? avoid addrinfo to be null anyway
+            addrinfo = "";
+        }
+
+        return "[Withdraw] uuid " + uuid + ", asset " + asset + ", account_uuid " + accountUuid + ", amount " + amount
+                + ", fee " + fee + addrinfo + ", status " + status;
     }
 }
