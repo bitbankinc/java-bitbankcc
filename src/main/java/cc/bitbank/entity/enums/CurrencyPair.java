@@ -43,7 +43,10 @@ public enum CurrencyPair {
     AVAX_JPY("avax_jpy"),
     AXS_JPY("axs_jpy"),
     FLR_JPY("flr_jpy"),
-    SAND_JPY("sand_jpy");
+    SAND_JPY("sand_jpy"),
+    GALA_JPY("gala_jpy"),
+    APE_JPY("ape_jpy"),
+    CHZ_JPY("chz_jpy");
 
     private final String pair;
 
