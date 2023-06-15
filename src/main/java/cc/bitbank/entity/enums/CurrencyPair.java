@@ -48,7 +48,8 @@ public enum CurrencyPair {
     APE_JPY("ape_jpy"),
     CHZ_JPY("chz_jpy"),
     OAS_JPY("oas_jpy"),
-    MANA_JPY("mana_jpy");
+    MANA_JPY("mana_jpy"),
+    GRT_JPY("grt_jpy");
 
     private final String pair;
 
