@@ -10,6 +10,7 @@ import cc.bitbank.Bitbankcc;
 import cc.bitbank.entity.Accounts;
 import cc.bitbank.entity.Assets;
 import cc.bitbank.entity.Candlestick;
+import cc.bitbank.entity.CircuitBreakInfo;
 import cc.bitbank.entity.Deposit;
 import cc.bitbank.entity.DepositHistory;
 import cc.bitbank.entity.Depth;
@@ -45,6 +46,8 @@ public class Example {
             Transactions.Transaction[] ts2 = bb.getTransaction(CurrencyPair.BTC_JPY, "20170410").transactions;
 
             List<Candlestick.Ohlcvs.Ohlcv> cs = bb.getCandlestick(CurrencyPair.BTC_JPY, CandleType._1DAY, "2017").candlestick[0].getOhlcvList();
+
+            CircuitBreakInfo cbi = bb.getCircuitBreakInfo(CurrencyPair.BTC_JPY);
 
             Assets as = bb.getAsset();
             System.out.println(as.assets[0]);
