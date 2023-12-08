@@ -34,6 +34,7 @@ import cc.bitbank.deserializer.JsonDecorder;
 import cc.bitbank.entity.Accounts;
 import cc.bitbank.entity.Assets;
 import cc.bitbank.entity.Candlestick;
+import cc.bitbank.entity.CircuitBreakInfo;
 import cc.bitbank.entity.DepositHistory;
 import cc.bitbank.entity.Depth;
 import cc.bitbank.entity.Order;
@@ -53,6 +54,7 @@ import cc.bitbank.entity.request.WithdrawBody;
 import cc.bitbank.entity.response.AccountsResponse;
 import cc.bitbank.entity.response.AssetsResponse;
 import cc.bitbank.entity.response.CandlestickResponse;
+import cc.bitbank.entity.response.CircuitBreakInfoResponse;
 import cc.bitbank.entity.response.DepositHistoryResponse;
 import cc.bitbank.entity.response.DepthResponse;
 import cc.bitbank.entity.response.ErrorCodeResponse;
@@ -229,6 +231,12 @@ public class Bitbankcc {
         URIBuilder builder = getPublicUriBuilder(path);
         CandlestickResponse result = doHttpGet(builder, CandlestickResponse.class, getPublicRequestHeader());
         return result.data;
+    }
+
+    public CircuitBreakInfo getCircuitBreakInfo(CurrencyPair pair) throws BitbankException, IOException {
+        String path = "/" + pair.getCode() + "/circuit_break_info";
+        URIBuilder builder = getPublicUriBuilder(path);
+        return doHttpGet(builder, CircuitBreakInfoResponse.class, getPublicRequestHeader()).data;
     }
 
     public Assets getAsset() throws BitbankException, IOException {
