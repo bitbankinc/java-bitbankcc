@@ -51,6 +51,7 @@ Depth depth = bb.getDepth(CurrencyPair.BTC_JPY);
 Transaction[] ts = bb.getTransaction(CurrencyPair.BTC_JPY).transactions;
 Transaction[] ts2 = bb.getTransaction(CurrencyPair.BTC_JPY, "20170410").transactions;
 List<Ohlcv> ohlcvs = bb.getCandlestick(CurrencyPair.BTC_JPY, CandleType._1DAY, "2017").candlestick[0].getOhlcvList();
+CircuitBreakInfo cbi = bb.getCircuitBreakInfo(CurrencyPair.BTC_JPY);
 
 ```
 
