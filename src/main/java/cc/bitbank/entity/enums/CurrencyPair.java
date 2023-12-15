@@ -51,7 +51,12 @@ public enum CurrencyPair {
     MANA_JPY("mana_jpy"),
     GRT_JPY("grt_jpy"),
     RNDR_JPY("rndr_jpy"),
-    BNB_JPY("bnb_jpy");
+    BNB_JPY("bnb_jpy"),
+    DAI_JPY("dai_jpy"),
+    OP_JPY("op_jpy"),
+    ARB_JPY("arb_jpy"),
+    KLAY_JPY("klay_jpy"),
+    IMX_JPY("imx_jpy");
 
     private final String pair;
 
