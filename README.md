@@ -110,6 +110,26 @@ for(Order o : orders.orders) {
 }
 ```
 
+#### Margin Positions
+Option's parameter can be seen in [document page](https://github.com/bitbankinc/bitbank-api-docs/blob/master/rest-api.md#fetch-margin-positions)
+```java
+MarginPositions positions = bb.getMarginPositions();
+System.out.println(positions);
+```
+
+#### Trade History
+Option's parameter can be seen in [document page](https://github.com/bitbankinc/bitbank-api-docs/blob/master/rest-api.md#fetch-trade-history)
+```java
+Map<String, String> option = new HashMap<String, String>();
+option.put("count", "1");
+option.put("since", "1490348550380");
+TradeHistory history = bb.getTradeHistory("btc_jpy", option);
+for(Trade d : history.trades) {
+    System.out.println(d);
+}
+```
+
+
 #### Deposit History
 Option's parameter can be seen in [document page](https://github.com/bitbankinc/bitbank-api-docs/blob/master/rest-api.md#fetch-deposit-history)
 ```java

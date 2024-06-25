@@ -21,10 +21,14 @@ public class Assets extends Data {
         public BigDecimal lockedAmount;
         @JsonProperty("free_amount")
         public BigDecimal freeAmount;
+        @JsonProperty("withdrawing_amount")
+        public BigDecimal withdrawingAmount;
         @JsonProperty("withdrawal_fee")
         public Object withdrawalFee;
         @JsonProperty("explorer")
         public String explorer;
+        @JsonProperty("collateral_ratio")
+        public BigDecimal collateralRatio;
 
         public String toString() {
             return "[Assets] asset " + asset + ", onhand_amount " + onhandAmount;
