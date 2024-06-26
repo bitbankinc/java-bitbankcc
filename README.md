@@ -25,6 +25,11 @@ Add the following dependency to your project's pom.xml
 ```
 Or you can use .jar file here [https://github.com/bitbankinc/java-bitbankcc/releases](https://github.com/bitbankinc/java-bitbankcc/releases)
 
+# Exec Sample
+
+1. prepare src/main/resources/example.properties and write your API key and secret
+2. exec `$ mvn clean compile exec:java -Dexec.mainClass=cc.bitbank.example.Example`
+
 ### For Scala
 Add the following dependency to your project's build.sbt
 ```
@@ -86,7 +91,7 @@ System.out.println(orders.orders[1]);
 
 #### Send New Order
 ```java
-Order order = bb.sendOrder(CurrencyPair.BTC_JPY, 130000, BigDecimal.valueOf(0.01), OrderSide.BUY, OrderType.LIMIT);
+Order order = bb.sendOrder(CurrencyPair.BTC_JPY, 130000, BigDecimal.valueOf(0.01), OrderSide.BUY, null, OrderType.LIMIT);
 ```
 
 #### Cancel Order/Orders

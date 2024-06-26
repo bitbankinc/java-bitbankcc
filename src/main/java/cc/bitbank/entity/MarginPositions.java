@@ -11,20 +11,22 @@ public class MarginPositions extends Data {
     public Payable payables;
     public Position[] positions;
     @JsonProperty("losscut_threshold")
-    private LosscutThreshold losscutThreshold;
+    public LosscutThreshold losscutThreshold;
 
     public static class Notice {
         public String what;
+        @JsonProperty("occurred_at")
         public Long occurredAt;
-        public String amount;
+        public BigDecimal amount;
+        @JsonProperty("due_date_at")
         public Long dueDateAt;
     }
 
     public static class Payable {
-        public String amount;
+        public BigDecimal amount;
     }
 
-    public class Position extends Data {
+    public static class Position {
         public String pair;
         @JsonProperty("position_side")
         public String positionSide;
