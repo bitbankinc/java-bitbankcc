@@ -58,7 +58,9 @@ public enum CurrencyPair {
     KLAY_JPY("klay_jpy"),
     IMX_JPY("imx_jpy"),
     MASK_JPY("mask_jpy"),
-    POL_JPY("pol_jpy");
+    POL_JPY("pol_jpy"),
+    SOL_JPY("sol_jpy"),
+    CYBER_JPY("cyber_jpy");
 
     private final String pair;
 
