@@ -62,6 +62,11 @@ Private api requires API_KEY and API_SECRET.
 ```java
 Bitbankcc bb = new Bitbankcc();
 bb.setKey("YOUR_API_KEY", "YOUR_API_SECRET");
+// use requestTime method(default)
+bb.setAuthMethod("requestTime");
+bb.setTimeWindow(5000); // optional
+// use nonce method
+bb.setAuthMethod("nonce");
 ```
 
 #### Assets

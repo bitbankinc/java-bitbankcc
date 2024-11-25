@@ -76,6 +76,8 @@ public class Bitbankcc {
     private String apiSecret = "";
     private String endPointPublic;
     private String endPointPrivate;
+    private String authMethod = "requestTime";
+    private int timeWindow = 5000;
 
     public Bitbankcc() {
         this.endPointPublic = "public.bitbank.cc";
@@ -85,6 +87,16 @@ public class Bitbankcc {
     public Bitbankcc setKey(String key, String secret) {
         this.apiKey = key;
         this.apiSecret = secret;
+        return this;
+    }
+
+    public Bitbankcc setAuthMethod(String authMethod) {
+        this.authMethod = authMethod;
+        return this;
+    }
+
+    public Bitbankcc setTimeWindow(int timeWindow) {
+        this.timeWindow = timeWindow;
         return this;
     }
 
@@ -108,7 +120,7 @@ public class Bitbankcc {
         return headers;
     }
 
-    private List<Header> makePrivateRequestHeader(long nonce, String sign) throws BitbankException {
+    private List<Header> makePrivateRequestNonceHeader(long nonce, String sign) throws BitbankException {
         List<Header> headers = new ArrayList<Header>();
         headers.add(new BasicHeader("content-type","application/json; charset=utf-8"));
         headers.add(new BasicHeader("ACCESS-KEY", this.apiKey));
@@ -117,18 +129,41 @@ public class Bitbankcc {
         return headers;
     }
 
+    private List<Header> makePrivateRequestRequestTimeHeader(long requestTime,String sign) throws BitbankException {
+        List<Header> headers = new ArrayList<Header>();
+        headers.add(new BasicHeader("content-type","application/json; charset=utf-8"));
+        headers.add(new BasicHeader("ACCESS-KEY", this.apiKey));
+        headers.add(new BasicHeader("ACCESS-REQUEST-TIME", String.valueOf(requestTime)));
+        headers.add(new BasicHeader("ACCESS-TIME-WINDOW", String.valueOf(this.timeWindow)));
+        headers.add(new BasicHeader("ACCESS-SIGNATURE", sign));
+        return headers;
+    }
+
     private List<Header> getPrivateRequestHeader(String path, List<NameValuePair> query) throws BitbankException {
-        long nonce = System.currentTimeMillis();
         String queryString = URLEncodedUtils.format(query, "utf-8");
         if(query.size() > 0) queryString = "?" + queryString;
-        String message = String.valueOf(nonce) + path + queryString;
-        return makePrivateRequestHeader(nonce, createSign(message));
+        if(this.authMethod == "requestTime"){
+            long requestTime = System.currentTimeMillis();
+            String message = String.valueOf(requestTime) + String.valueOf(this.timeWindow)
+                + path + queryString;
+            return makePrivateRequestRequestTimeHeader(requestTime, createSign(message));
+        } else {
+            long nonce = System.currentTimeMillis();
+            String message = String.valueOf(nonce) + path + queryString;
+            return makePrivateRequestNonceHeader(nonce, createSign(message));
+        }
     }
 
     private List<Header> getPrivateRequestHeader(String json) throws BitbankException {
-        long nonce = System.currentTimeMillis();
-        String message = String.valueOf(nonce) + json;
-        return makePrivateRequestHeader(nonce, createSign(message));
+        if(this.authMethod == "requestTime"){
+            long requestTime = System.currentTimeMillis();
+            String message = String.valueOf(requestTime) + String.valueOf(this.timeWindow) + json;
+            return makePrivateRequestRequestTimeHeader(requestTime, createSign(message));
+        } else {
+            long nonce = System.currentTimeMillis();
+            String message = String.valueOf(nonce) + json;
+            return makePrivateRequestNonceHeader(nonce, createSign(message));
+        }
     }
 
     private String createSign(String message) throws BitbankException {
