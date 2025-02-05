@@ -61,7 +61,8 @@ public enum CurrencyPair {
     POL_JPY("pol_jpy"),
     SOL_JPY("sol_jpy"),
     CYBER_JPY("cyber_jpy"),
-    RENDER_JPY("render_jpy");
+    RENDER_JPY("render_jpy"),
+    TRX_JPY("trx_jpy");
 
     private final String pair;
 
