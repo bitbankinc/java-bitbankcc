@@ -61,7 +61,7 @@ public class Example {
             Order order = bb.getOrder(CurrencyPair.BTC_JPY, 90956209);
             System.out.println(order);
 
-            Order order2 = bb.sendOrder(CurrencyPair.BTC_JPY, BigDecimal.valueOf(10000), BigDecimal.valueOf(0.01), OrderSide.BUY, null, OrderType.LIMIT);
+            Order order2 = bb.sendOrder(CurrencyPair.BTC_JPY, BigDecimal.valueOf(10000), BigDecimal.valueOf(0.01), OrderSide.BUY, OrderType.LIMIT);
             System.out.println(order2);
 
             Order order3 = bb.cancelOrder(CurrencyPair.BTC_JPY, 129781978);

@@ -315,23 +315,23 @@ public class Bitbankcc {
     }
 
     // for source-level compatibility, market order, etc.
-    public Order sendOrder(CurrencyPair pair, BigDecimal price, BigDecimal amount, OrderSide side, PositionSide positionSide, OrderType type)
+    public Order sendOrder(CurrencyPair pair, BigDecimal price, BigDecimal amount, OrderSide side, OrderType type)
         throws BitbankException, IOException {
-        return sendOrder(pair, price, amount, side, positionSide, type, false, null);
+        return sendOrder(pair, price, amount, side, type, false, null, null);
     }
 
-    public Order sendOrder(CurrencyPair pair, BigDecimal price, BigDecimal amount, OrderSide side, PositionSide positionSide, OrderType type, boolean postOnly)
+    public Order sendOrder(CurrencyPair pair, BigDecimal price, BigDecimal amount, OrderSide side, OrderType type, boolean postOnly)
         throws BitbankException, IOException {
-        return sendOrder(pair, price, amount, side, positionSide, type, postOnly, null);
+        return sendOrder(pair, price, amount, side, type, postOnly, null, null);
     }
 
-    public Order sendOrder(CurrencyPair pair, BigDecimal price, BigDecimal amount, OrderSide side, PositionSide positionSide, OrderType type, BigDecimal triggerPrice)
+    public Order sendOrder(CurrencyPair pair, BigDecimal price, BigDecimal amount, OrderSide side, OrderType type, BigDecimal triggerPrice)
         throws BitbankException, IOException {
-        return sendOrder(pair, price, amount, side, positionSide, type, false, triggerPrice);
+        return sendOrder(pair, price, amount, side, type, false, triggerPrice, null);
     }
 
-    public Order sendOrder(CurrencyPair pair, BigDecimal price, BigDecimal amount, OrderSide side, PositionSide positionSide, OrderType type,
-            boolean postOnly, BigDecimal triggerPrice) throws BitbankException, IOException {
+    public Order sendOrder(CurrencyPair pair, BigDecimal price, BigDecimal amount, OrderSide side, OrderType type,
+            boolean postOnly, BigDecimal triggerPrice, PositionSide positionSide) throws BitbankException, IOException {
         String path = "/v1/user/spot/order";
         URIBuilder builder = getPrivateUriBuilder(path);
 

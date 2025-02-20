@@ -19,13 +19,13 @@ public class OrderBody {
     public String amount;
     public BigDecimal price;
     public String side;
-    @JsonProperty("position_side")
-    public String positionSide;
     public String type;
     @JsonProperty("post_only")
     public boolean postOnly;
     @JsonProperty("trigger_price")
     public BigDecimal triggerPrice;
+    @JsonProperty("position_side")
+    public String positionSide;
 
     public OrderBody(CurrencyPair pair, BigDecimal amount, BigDecimal price, OrderSide side, OrderType type,
             boolean postOnly, BigDecimal triggerPrice, PositionSide positionSide) {
@@ -33,10 +33,10 @@ public class OrderBody {
         this.amount = amount.toString();
         this.price = price;
         this.side = side.getCode();
-        this.positionSide = positionSide.getCode();
         this.type = type.getCode();
         this.postOnly = postOnly;
         this.triggerPrice = triggerPrice;
+        this.positionSide = positionSide != null ? positionSide.getCode() : null;
     }
 
     public String toJson() {
