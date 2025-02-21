@@ -14,9 +14,12 @@ import cc.bitbank.entity.CircuitBreakInfo;
 import cc.bitbank.entity.Deposit;
 import cc.bitbank.entity.DepositHistory;
 import cc.bitbank.entity.Depth;
+import cc.bitbank.entity.MarginPositions;
 import cc.bitbank.entity.Order;
 import cc.bitbank.entity.Orders;
 import cc.bitbank.entity.Ticker;
+import cc.bitbank.entity.Trade;
+import cc.bitbank.entity.TradeHistory;
 import cc.bitbank.entity.Transactions;
 import cc.bitbank.entity.Withdraw;
 import cc.bitbank.entity.WithdrawalHistory;
@@ -83,11 +86,22 @@ public class Example {
                 System.out.println(o);
             }
 
+            MarginPositions positions = bb.getMarginPositions();
+            System.out.println(positions);
+
             Map<String, String> option2 = new HashMap<String, String>();
             option2.put("count", "1");
             option2.put("since", "1490348550380");
             DepositHistory history = bb.getDepositHistory("btc", option2);
             for(Deposit d : history.deposits) {
+                System.out.println(d);
+            }
+
+            Map<String, String> option3 = new HashMap<String, String>();
+            option3.put("count", "1");
+            option3.put("since", "1696410137317");
+            TradeHistory history2 = bb.getTradeHistory(CurrencyPair.QTUM_JPY, option3);
+            for(Trade d : history2.trades) {
                 System.out.println(d);
             }
 
@@ -100,11 +114,11 @@ public class Example {
                     BigDecimal.valueOf(0.005), "867005", "");
             System.out.println(w);
 
-            Map<String, String> option3 = new HashMap<String, String>();
-            option3.put("count", "1");
-            option3.put("since", "1490348550380");
-            WithdrawalHistory history2 = bb.getWithdrawalHistory("btc", option3);
-            for(Withdraw w2 : history2.withdrawals) {
+            Map<String, String> option4 = new HashMap<String, String>();
+            option4.put("count", "1");
+            option4.put("since", "1490348550380");
+            WithdrawalHistory history3 = bb.getWithdrawalHistory("btc", option4);
+            for(Withdraw w2 : history3.withdrawals) {
                 System.out.println(w2);
             }
 

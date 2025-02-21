@@ -25,6 +25,11 @@ Add the following dependency to your project's pom.xml
 ```
 Or you can use .jar file here [https://github.com/bitbankinc/java-bitbankcc/releases](https://github.com/bitbankinc/java-bitbankcc/releases)
 
+# Exec Sample
+
+1. prepare src/main/resources/example.properties and write your API key and secret
+2. exec `$ mvn clean compile exec:java -Dexec.mainClass=cc.bitbank.example.Example`
+
 ### For Scala
 Add the following dependency to your project's build.sbt
 ```
@@ -86,7 +91,7 @@ System.out.println(orders.orders[1]);
 
 #### Send New Order
 ```java
-Order order = bb.sendOrder(CurrencyPair.BTC_JPY, 130000, BigDecimal.valueOf(0.01), OrderSide.BUY, OrderType.LIMIT);
+Order order = bb.sendOrder(CurrencyPair.BTC_JPY, 130000, BigDecimal.valueOf(0.01), OrderSide.BUY, null, OrderType.LIMIT);
 ```
 
 #### Cancel Order/Orders
@@ -109,6 +114,26 @@ for(Order o : orders.orders) {
     System.out.println(o);
 }
 ```
+
+#### Margin Positions
+Option's parameter can be seen in [document page](https://github.com/bitbankinc/bitbank-api-docs/blob/master/rest-api.md#fetch-margin-positions)
+```java
+MarginPositions positions = bb.getMarginPositions();
+System.out.println(positions);
+```
+
+#### Trade History
+Option's parameter can be seen in [document page](https://github.com/bitbankinc/bitbank-api-docs/blob/master/rest-api.md#fetch-trade-history)
+```java
+Map<String, String> option = new HashMap<String, String>();
+option.put("count", "1");
+option.put("since", "1490348550380");
+TradeHistory history = bb.getTradeHistory("btc_jpy", option);
+for(Trade d : history.trades) {
+    System.out.println(d);
+}
+```
+
 
 #### Deposit History
 Option's parameter can be seen in [document page](https://github.com/bitbankinc/bitbank-api-docs/blob/master/rest-api.md#fetch-deposit-history)
