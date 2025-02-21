@@ -17,6 +17,8 @@ public class Order extends Data {
     public long orderId;
     public String pair;
     public OrderSide side;
+    @JsonProperty("position_side")
+    public String positionSide;
     public OrderType type;
     @JsonProperty("start_amount")
     public BigDecimal startAmount;
@@ -27,6 +29,8 @@ public class Order extends Data {
     public BigDecimal price;
     @JsonProperty("post_only")
     public boolean postOnly;
+    @JsonProperty("user_cancelable")
+    public boolean userCancelable;
     @JsonProperty("average_price")
     public BigDecimal averagePrice;
     @JsonProperty("trigger_price")
@@ -44,7 +48,7 @@ public class Order extends Data {
     public String status;
 
     public String toString() {
-        return "[Order] orderId " + orderId + ", pair " + pair + ", side " + side + ", type " + type +
+        return "[Order] orderId " + orderId + ", pair " + pair + ", side " + side + ", positionSide " + positionSide + ", type " + type +
                 ", remainingAmount " + remainingAmount + ", price " + price + ", status " + status;
     }
 }
