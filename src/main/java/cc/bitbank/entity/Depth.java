@@ -23,18 +23,24 @@ public class Depth extends Data {
     private String asksUnder;
     @JsonProperty("bids_over")
     private String bidsOver;
+    @JsonProperty("ask_market")
+    private String askMarket;
+    @JsonProperty("bid_market")
+    private String bidMarket;
     private Date timestamp;
     private String sequenceId;
 
     public Depth() {}
 
-    public Depth(BigDecimal[][] asks, BigDecimal[][] bids, String asksOver, String bidsUnder, String asksUnder, String bidsOver, Date timestamp, String sequenceId) {
+    public Depth(BigDecimal[][] asks, BigDecimal[][] bids, String asksOver, String bidsUnder, String asksUnder, String bidsOver, String askMarket, String bidMarket, Date timestamp, String sequenceId) {
         this.asks = asks;
         this.bids = bids;
         this.asksOver = asksOver;
         this.bidsUnder = bidsUnder;
         this.asksUnder = asksUnder;
         this.bidsOver = bidsOver;
+        this.askMarket = askMarket;
+        this.bidMarket = bidMarket;
         this.timestamp = timestamp;
         this.sequenceId = sequenceId;
     }
@@ -63,6 +69,14 @@ public class Depth extends Data {
         return bidsOver;
     }
 
+    public String getAskMarket() {
+        return askMarket;
+    }
+
+    public String getBidMarket() {
+        return bidMarket;
+    }
+
     public Date getTimestamp() {
         return timestamp;
     }
@@ -80,6 +94,8 @@ public class Depth extends Data {
                 "bidsUnder " + bidsUnder + " " +
                 "asksUnder" + asksUnder + " " +
                 "bidsOver" + bidsOver + " " +
+                "askMarket" + askMarket + " " +
+                "bidMarket" + bidMarket + " " +
                 "timestamp" + timestamp + " " +
                 "sequenceId" + sequenceId;
     }
