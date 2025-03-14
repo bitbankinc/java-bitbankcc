@@ -37,9 +37,11 @@ import cc.bitbank.entity.Candlestick;
 import cc.bitbank.entity.CircuitBreakInfo;
 import cc.bitbank.entity.DepositHistory;
 import cc.bitbank.entity.Depth;
+import cc.bitbank.entity.MarginPositions;
 import cc.bitbank.entity.Order;
 import cc.bitbank.entity.Orders;
 import cc.bitbank.entity.Ticker;
+import cc.bitbank.entity.TradeHistory;
 import cc.bitbank.entity.Transactions;
 import cc.bitbank.entity.Withdraw;
 import cc.bitbank.entity.WithdrawalHistory;
@@ -47,6 +49,7 @@ import cc.bitbank.entity.enums.CandleType;
 import cc.bitbank.entity.enums.CurrencyPair;
 import cc.bitbank.entity.enums.OrderSide;
 import cc.bitbank.entity.enums.OrderType;
+import cc.bitbank.entity.enums.PositionSide;
 import cc.bitbank.entity.request.CancelBody;
 import cc.bitbank.entity.request.CancelsBody;
 import cc.bitbank.entity.request.OrderBody;
@@ -58,10 +61,12 @@ import cc.bitbank.entity.response.CircuitBreakInfoResponse;
 import cc.bitbank.entity.response.DepositHistoryResponse;
 import cc.bitbank.entity.response.DepthResponse;
 import cc.bitbank.entity.response.ErrorCodeResponse;
+import cc.bitbank.entity.response.MarginPositionsResponse;
 import cc.bitbank.entity.response.OrderResponse;
 import cc.bitbank.entity.response.OrdersResponse;
 import cc.bitbank.entity.response.Response;
 import cc.bitbank.entity.response.TickerResponse;
+import cc.bitbank.entity.response.TradeHistoryResponse;
 import cc.bitbank.entity.response.TransactionsResponse;
 import cc.bitbank.entity.response.WithdrawResponse;
 import cc.bitbank.entity.response.WithdrawalHistoryResponse;
@@ -282,6 +287,12 @@ public class Bitbankcc {
         return result.data;
     }
 
+    public MarginPositions getMarginPositions() throws BitbankException, IOException {
+        String path = "/v1/user/margin/positions";
+        URIBuilder builder = getPrivateUriBuilder(path);
+        return doHttpGet(builder, MarginPositionsResponse.class, getPrivateRequestHeader(path)).data;
+    }
+
     public Order getOrder(CurrencyPair pair, long id) throws BitbankException, IOException {
         String path = "/v1/user/spot/order";
         List<NameValuePair> nameValuePair = new ArrayList<NameValuePair>();
@@ -306,25 +317,25 @@ public class Bitbankcc {
     // for source-level compatibility, market order, etc.
     public Order sendOrder(CurrencyPair pair, BigDecimal price, BigDecimal amount, OrderSide side, OrderType type)
         throws BitbankException, IOException {
-        return sendOrder(pair, price, amount, side, type, false, null);
+        return sendOrder(pair, price, amount, side, type, false, null, null);
     }
 
     public Order sendOrder(CurrencyPair pair, BigDecimal price, BigDecimal amount, OrderSide side, OrderType type, boolean postOnly)
         throws BitbankException, IOException {
-        return sendOrder(pair, price, amount, side, type, postOnly, null);
+        return sendOrder(pair, price, amount, side, type, postOnly, null, null);
     }
 
     public Order sendOrder(CurrencyPair pair, BigDecimal price, BigDecimal amount, OrderSide side, OrderType type, BigDecimal triggerPrice)
         throws BitbankException, IOException {
-        return sendOrder(pair, price, amount, side, type, false, triggerPrice);
+        return sendOrder(pair, price, amount, side, type, false, triggerPrice, null);
     }
 
-    public Order sendOrder(CurrencyPair pair, BigDecimal price, BigDecimal amount, OrderSide side, OrderType type, boolean postOnly,
-            BigDecimal triggerPrice) throws BitbankException, IOException {
+    public Order sendOrder(CurrencyPair pair, BigDecimal price, BigDecimal amount, OrderSide side, OrderType type,
+            boolean postOnly, BigDecimal triggerPrice, PositionSide positionSide) throws BitbankException, IOException {
         String path = "/v1/user/spot/order";
         URIBuilder builder = getPrivateUriBuilder(path);
 
-        String json = new OrderBody(pair, amount, price, side, type, postOnly, triggerPrice).toJson();
+        String json = new OrderBody(pair, amount, price, side, type, postOnly, triggerPrice, positionSide).toJson();
         StringEntity entity = new StringEntity(json);
         OrderResponse result = doHttpPost(builder, OrderResponse.class, getPrivateRequestHeader(json), entity);
         return result.data;
@@ -360,6 +371,18 @@ public class Bitbankcc {
         URIBuilder builder = getPrivateUriBuilder(path).setParameters(nameValuePair);
         OrdersResponse result = doHttpGet(builder, OrdersResponse.class, getPrivateRequestHeader(path, nameValuePair));
         return result.data;
+    }
+
+    public TradeHistory getTradeHistory(CurrencyPair pair, Map<String, String> option) throws BitbankException, IOException {
+        String path = "/v1/user/spot/trade_history";
+        List<NameValuePair> nameValuePair = new ArrayList<NameValuePair>();
+        nameValuePair.add(new BasicNameValuePair("pair", pair.getCode()));
+        for(Map.Entry<String, String> e : option.entrySet()) {
+            nameValuePair.add(new BasicNameValuePair(e.getKey(), e.getValue().toString()));
+        }
+
+        URIBuilder builder = getPrivateUriBuilder(path).addParameters(nameValuePair);
+        return doHttpGet(builder, TradeHistoryResponse.class, getPrivateRequestHeader(path, nameValuePair)).data;
     }
 
     public DepositHistory getDepositHistory(String asset) throws BitbankException, IOException {
