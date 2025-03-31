@@ -173,6 +173,11 @@ for(Withdraw w : history.withdrawals) {
 }
 ```
 
+#### Get subscribe channel & token
+```java
+Subscribe sub = bb.getSubscribe();
+```
+
 
 # Error Handling
 ```java
