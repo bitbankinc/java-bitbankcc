@@ -40,6 +40,7 @@ import cc.bitbank.entity.Depth;
 import cc.bitbank.entity.MarginPositions;
 import cc.bitbank.entity.Order;
 import cc.bitbank.entity.Orders;
+import cc.bitbank.entity.Subscribe;
 import cc.bitbank.entity.Ticker;
 import cc.bitbank.entity.TradeHistory;
 import cc.bitbank.entity.Transactions;
@@ -65,6 +66,7 @@ import cc.bitbank.entity.response.MarginPositionsResponse;
 import cc.bitbank.entity.response.OrderResponse;
 import cc.bitbank.entity.response.OrdersResponse;
 import cc.bitbank.entity.response.Response;
+import cc.bitbank.entity.response.SubscribeResponse;
 import cc.bitbank.entity.response.TickerResponse;
 import cc.bitbank.entity.response.TradeHistoryResponse;
 import cc.bitbank.entity.response.TransactionsResponse;
@@ -440,6 +442,13 @@ public class Bitbankcc {
         URIBuilder builder = getPrivateUriBuilder(path).addParameters(nameValuePair);
         WithdrawalHistoryResponse result = doHttpGet(builder, WithdrawalHistoryResponse.class,
                 getPrivateRequestHeader(path, nameValuePair));
+        return result.data;
+    }
+
+    public Subscribe getSubscribe() throws BitbankException, IOException {
+        String path = "/v1/user/subscribe";
+        URIBuilder builder = getPrivateUriBuilder(path);
+        SubscribeResponse result = doHttpGet(builder, SubscribeResponse.class, getPrivateRequestHeader(path));
         return result.data;
     }
 }
