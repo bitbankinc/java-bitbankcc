@@ -17,6 +17,7 @@ import cc.bitbank.entity.Depth;
 import cc.bitbank.entity.MarginPositions;
 import cc.bitbank.entity.Order;
 import cc.bitbank.entity.Orders;
+import cc.bitbank.entity.Subscribe;
 import cc.bitbank.entity.Ticker;
 import cc.bitbank.entity.Trade;
 import cc.bitbank.entity.TradeHistory;
@@ -122,6 +123,8 @@ public class Example {
                 System.out.println(w2);
             }
 
+            Subscribe sub = bb.getSubscribe();
+            System.out.println(sub);
         } catch (BitbankException e) {
             System.out.println(e.code);
         } catch (Exception e) {
