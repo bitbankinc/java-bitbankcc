@@ -65,7 +65,8 @@ public enum CurrencyPair {
     TRX_JPY("trx_jpy"),
     LPT_JPY("lpt_jpy"),
     ATOM_JPY("atom_jpy"),
-    SUI_JPY("sui_jpy");
+    SUI_JPY("sui_jpy"),
+    SKY_JPY("sky_jpy");
 
     private final String pair;
 
