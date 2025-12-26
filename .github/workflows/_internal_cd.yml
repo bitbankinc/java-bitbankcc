@@ -1,0 +1,31 @@
+name: AutoDeploy for public(bitbankinc)
+
+on:
+  pull_request:
+    types:
+      - opened    # insert-pr-template
+      - reopened  # insert-pr-template
+      - edited    # description-check
+      - closed    # create-p-r-for-public
+    branches:
+      # マージ先のブランチ
+      - production
+      - 'feat/auto_deploy' # test branch
+
+permissions:
+  id-token: write
+  contents: read
+  pull-requests: write
+
+jobs:
+  deployer:
+    uses: bitbankcc/bitbankinc-p-r-publisher/.github/workflows/reusable_cd.yml@production
+    with:
+      PUBLIC_REPO_URL: bitbankinc/java-bitbankcc
+      PRIVATE_REPO_URL: bitbankinc/sdk-publish-test # not required
+      COMMITTER_NAME: 'bitbank Bot'
+      COMMITTER_EMAIL: 'bitbank-bot@users.noreply.github.com'
+      DEFAULT_BRANCH: master
+    secrets:
+      BITBANKINC_GITHUB_TOKEN: "${{ secrets.BITBANKINC_JAVA_BITBANKCC_TOKEN }}"
+      PRIVATE_GITHUB_TOKEN: ${{ secrets.BITBANKINC_SDK_PUBLISH_TEST_TOKEN }}
