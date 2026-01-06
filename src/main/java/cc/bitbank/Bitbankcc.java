@@ -392,9 +392,13 @@ public class Bitbankcc {
     }
 
     public DepositHistory getDepositHistory(String asset, Map<String, String> option) throws BitbankException, IOException {
+        option.put("asset", asset);
+        return getDepositHistory(option);
+    }
+
+    public DepositHistory getDepositHistory(Map<String, String> option) throws BitbankException, IOException {
         String path = "/v1/user/deposit_history";
         List<NameValuePair> nameValuePair = new ArrayList<NameValuePair>();
-        nameValuePair.add(new BasicNameValuePair("asset", asset));
         for(Map.Entry<String, String> e : option.entrySet()) {
             nameValuePair.add(new BasicNameValuePair(e.getKey(), e.getValue().toString()));
         }
@@ -432,9 +436,13 @@ public class Bitbankcc {
     }
 
     public WithdrawalHistory getWithdrawalHistory(String asset, Map<String, String> option) throws BitbankException, IOException {
+        option.put("asset", asset);
+        return getWithdrawalHistory(option);
+    }
+
+    public WithdrawalHistory getWithdrawalHistory(Map<String, String> option) throws BitbankException, IOException {
         String path = "/v1/user/withdrawal_history";
         List<NameValuePair> nameValuePair = new ArrayList<NameValuePair>();
-        nameValuePair.add(new BasicNameValuePair("asset", asset));
         for(Map.Entry<String, String> e : option.entrySet()) {
             nameValuePair.add(new BasicNameValuePair(e.getKey(), e.getValue().toString()));
         }
