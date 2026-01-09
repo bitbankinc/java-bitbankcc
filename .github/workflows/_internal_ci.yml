@@ -23,10 +23,10 @@ jobs:
       - name: Compare current production with public master
         run: |
           echo "Comparing private production with public/master..."
-          git diff --stat public/master..origin/production
+          git diff --stat public/master..origin/production ':(exclude).github/**/_internal*'
 
           echo "Checking if there are any differences..."
-          if git diff --quiet public/master..origin/production; then
+          if git diff --quiet public/master..origin/production ':(exclude).github/**/_internal*'; then
             echo "✅ No differences found."
           else
             echo "❌ Differences detected."
