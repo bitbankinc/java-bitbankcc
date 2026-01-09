@@ -1,0 +1,34 @@
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  diff:
+    if: github.repository != 'bitbankinc/java-bitbankcc'
+    continue-on-error: true
+    runs-on: low
+    steps:
+      - name: Checkout private repo
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Add public repo as remote and fetch
+        run: |
+          git remote add public https://github.com/bitbankinc/java-bitbankcc.git
+          git fetch public
+      - name: Compare current production with public master
+        run: |
+          echo "Comparing private production with public/master..."
+          git diff --stat public/master..origin/production ':(exclude).github/**/_internal*'
+
+          echo "Checking if there are any differences..."
+          if git diff --quiet public/master..origin/production ':(exclude).github/**/_internal*'; then
+            echo "✅ No differences found."
+          else
+            echo "❌ Differences detected."
+            exit 1
+          fi
