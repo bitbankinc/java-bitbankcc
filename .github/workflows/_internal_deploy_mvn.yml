@@ -1,0 +1,136 @@
+name: java mvn CD
+
+on:
+  push:
+    branches:
+      - master
+      - production/package
+
+jobs:
+  mvn-publish-bitbankcc:
+    runs-on: low
+    container:
+      image: maven:3.8.7-openjdk-18
+      credentials:
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
+    env:
+      COMMITTER_NAME: 'bitbank Bot'
+      COMMITTER_EMAIL: 'bitbank-bot@users.noreply.github.com'
+    if: github.repository != 'bitbankinc/java-bitbankcc' && github.ref == 'refs/heads/master'
+    permissions:
+      id-token: write
+      contents: write
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Set up Git identity
+        run: |
+          git config --global user.name "$COMMITTER_NAME"
+          git config --global user.email "$COMMITTER_EMAIL"
+      - name: mvn install
+        run: mvn install
+      - name: Get project version
+        id: version
+        run: |
+          PROJECT_VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
+          echo "PROJECT_VERSION=${PROJECT_VERSION}" >> $GITHUB_ENV
+          echo "project_version=${PROJECT_VERSION}" >> $GITHUB_OUTPUT
+      - name: Check if tag exists on origin
+        id: tagcheck
+        run: |
+          git fetch --tags origin
+          VERSION="${{ steps.version.outputs.project_version }}"
+          if git ls-remote --tags origin "refs/tags/${VERSION}" | grep -q .; then
+            echo "exists=true" >> $GITHUB_OUTPUT
+            echo "Tag ${VERSION} already exists. Skip deploy."
+          else
+            echo "exists=false" >> $GITHUB_OUTPUT
+            echo "Tag ${VERSION} does not exist. Proceed deploy."
+          fi
+      - name: mvn deploy
+        if: steps.tagcheck.outputs.exists != 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          mvn -Duser.name=bbcicd -DskipTests clean package deploy:deploy
+          export PROJECT_VERSION="${{ steps.version.outputs.project_version }}"
+          git tag -m "Maven artifacts for ${PROJECT_VERSION}" ${PROJECT_VERSION}
+          git fetch origin
+          git checkout mvn-repo
+          rm -rf cc
+          cp -r target/mvn-repo/cc .
+          git add cc
+          git commit -m "Maven artifacts for ${PROJECT_VERSION}"
+          git push origin mvn-repo --tags
+      - name: Deploy skipped (tag exists)
+        if: steps.tagcheck.outputs.exists == 'true'
+        run: echo "Deploy skipped because tag ${{ steps.version.outputs.project_version }} already exists."
+
+  mvn-publish-bitbankinc:
+    runs-on: low
+    container:
+      image: maven:3.8.7-openjdk-18
+      credentials:
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
+    env:
+      COMMITTER_NAME: 'bitbank Bot'
+      COMMITTER_EMAIL: 'bitbank-bot@users.noreply.github.com'
+    if: github.repository != 'bitbankinc/java-bitbankcc' && github.ref == 'refs/heads/production/package'
+    permissions:
+      id-token: write
+      contents: write
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Set up Git identity
+        run: |
+          git config --global user.name "$COMMITTER_NAME"
+          git config --global user.email "$COMMITTER_EMAIL"
+      - name: Set up public
+        run: |
+          git remote add java-bitbankcc https://github.com/bitbankinc/java-bitbankcc.git
+      - name: mvn install
+        run: mvn install
+      - name: Get project version
+        id: version
+        run: |
+          PROJECT_VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
+          echo "PROJECT_VERSION=${PROJECT_VERSION}" >> $GITHUB_ENV
+          echo "project_version=${PROJECT_VERSION}" >> $GITHUB_OUTPUT
+      - name: Check if tag exists on java-bitbankcc
+        id: tagcheck
+        run: |
+          git fetch --tags java-bitbankcc
+          VERSION="${{ steps.version.outputs.project_version }}"
+          if git ls-remote --tags java-bitbankcc "refs/tags/${VERSION}" | grep -q .; then
+            echo "exists=true" >> $GITHUB_OUTPUT
+            echo "Tag ${VERSION} already exists. Skip deploy."
+          else
+            echo "exists=false" >> $GITHUB_OUTPUT
+            echo "Tag ${VERSION} does not exist. Proceed deploy."
+          fi
+      - name: mvn deploy
+        if: steps.tagcheck.outputs.exists != 'true'
+        env:
+          GH_TOKEN: ${{ secrets.BITBANKINC_JAVA_BITBANKCC_TOKEN }}
+        run: |
+          mvn -Duser.name=bbcicd -DskipTests clean package deploy:deploy
+          export PROJECT_VERSION="${{ steps.version.outputs.project_version }}"
+          git tag -m "Maven artifacts for ${PROJECT_VERSION}" ${PROJECT_VERSION}
+          git fetch java-bitbankcc
+          git checkout mvn-repo
+          rm -rf cc
+          cp -r target/mvn-repo/cc .
+          git add cc
+          git commit -m "Maven artifacts for ${PROJECT_VERSION}"
+          git push java-bitbankcc mvn-repo --tags
+      - name: Deploy skipped (tag exists)
+        if: steps.tagcheck.outputs.exists == 'true'
+        run: echo "Deploy skipped because tag ${{ steps.version.outputs.project_version }} already exists."
+
