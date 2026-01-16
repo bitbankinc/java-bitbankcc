@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - master
-      - production/package
+      - production-package
 
 jobs:
   mvn-publish-bitbankcc:
@@ -79,7 +79,7 @@ jobs:
     env:
       COMMITTER_NAME: 'bitbank Bot'
       COMMITTER_EMAIL: 'bitbank-bot@users.noreply.github.com'
-    if: github.repository != 'bitbankinc/java-bitbankcc' && github.ref == 'refs/heads/production/package'
+    if: github.repository != 'bitbankinc/java-bitbankcc' && github.ref == 'refs/heads/production-package'
     permissions:
       id-token: write
       contents: write
