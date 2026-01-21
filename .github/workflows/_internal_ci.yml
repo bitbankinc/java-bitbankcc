@@ -32,3 +32,47 @@ jobs:
             echo "❌ Differences detected."
             exit 1
           fi
+
+  java-ci:
+    runs-on: low
+    services:
+      mock:
+        image: ghcr.io/bitbankinc/mock-bitbankcc
+        ports:
+          - 8080:8080
+        # specifying healthcheck will ensures that service is running...
+        options: >-
+          --health-cmd "curl -f http://localhost:8080/btc_jpy/ticker || exit 1"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    container:
+      image: maven:3.8.7-openjdk-18
+      credentials:
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: replace url to mock
+        run: |
+          sed -i -e s#"api.bitbank.cc"#"localhost:8080"# src/main/java/cc/bitbank/Bitbankcc.java
+          sed -i -e s#"public.bitbank.cc"#"localhost:8080"# src/main/java/cc/bitbank/Bitbankcc.java
+          sed -i -e s#"https"#"http"# src/main/java/cc/bitbank/Bitbankcc.java
+
+      - run: cat src/main/java/cc/bitbank/Bitbankcc.java
+
+      - name: add dummy API_KEY and API_SECRET
+        run: |
+          mkdir src/main/resources
+          cat << EOF > src/main/resources/example.properties
+          key="dummy"
+          secret="dummy"
+          EOF
+
+      - name: mvn install
+        run: mvn install
+
+      - name: run unittest
+        run: mvn clean compile exec:java -Dexec.mainClass=cc.bitbank.example.Example
