@@ -1,0 +1,78 @@
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  diff:
+    if: github.repository != 'bitbankinc/java-bitbankcc'
+    continue-on-error: true
+    runs-on: low
+    steps:
+      - name: Checkout private repo
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Add public repo as remote and fetch
+        run: |
+          git remote add public https://github.com/bitbankinc/java-bitbankcc.git
+          git fetch public
+      - name: Compare current production with public master
+        run: |
+          echo "Comparing private production with public/master..."
+          git diff --stat public/master..origin/production ':(exclude).github/**/_internal*'
+
+          echo "Checking if there are any differences..."
+          if git diff --quiet public/master..origin/production ':(exclude).github/**/_internal*'; then
+            echo "✅ No differences found."
+          else
+            echo "❌ Differences detected."
+            exit 1
+          fi
+
+  java-ci:
+    runs-on: low
+    services:
+      mock:
+        image: ghcr.io/bitbankinc/mock-bitbankcc
+        ports:
+          - 8080:8080
+        # specifying healthcheck will ensures that service is running...
+        options: >-
+          --health-cmd "curl -f http://localhost:8080/btc_jpy/ticker || exit 1"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    container:
+      image: maven:3.8.7-openjdk-18
+      credentials:
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: replace url to mock
+        run: |
+          sed -i -e s#"api.bitbank.cc"#"localhost:8080"# src/main/java/cc/bitbank/Bitbankcc.java
+          sed -i -e s#"public.bitbank.cc"#"localhost:8080"# src/main/java/cc/bitbank/Bitbankcc.java
+          sed -i -e s#"https"#"http"# src/main/java/cc/bitbank/Bitbankcc.java
+
+      - run: cat src/main/java/cc/bitbank/Bitbankcc.java
+
+      - name: add dummy API_KEY and API_SECRET
+        run: |
+          mkdir src/main/resources
+          cat << EOF > src/main/resources/example.properties
+          key="dummy"
+          secret="dummy"
+          EOF
+
+      - name: mvn install
+        run: mvn install
+
+      - name: run unittest
+        run: mvn clean compile exec:java -Dexec.mainClass=cc.bitbank.example.Example
