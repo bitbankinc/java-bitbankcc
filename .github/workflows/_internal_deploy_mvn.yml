@@ -41,7 +41,6 @@ jobs:
       - name: Check if tag exists on origin
         id: tagcheck
         run: |
-          git fetch --tags origin
           VERSION="${{ steps.version.outputs.project_version }}"
           if git ls-remote --tags origin "refs/tags/${VERSION}" | grep -q .; then
             echo "exists=true" >> $GITHUB_OUTPUT
@@ -57,14 +56,16 @@ jobs:
         run: |
           mvn -Duser.name=bbcicd -DskipTests clean package deploy:deploy
           export PROJECT_VERSION="${{ steps.version.outputs.project_version }}"
+          git tag -d "${PROJECT_VERSION}" 2>/dev/null || true
           git tag -m "Maven artifacts for ${PROJECT_VERSION}" ${PROJECT_VERSION}
-          git fetch origin
-          git checkout mvn-repo
+          git fetch origin mvn-repo
+          git checkout -B mvn-repo origin/mvn-repo
           rm -rf cc
           cp -r target/mvn-repo/cc .
           git add cc
           git commit -m "Maven artifacts for ${PROJECT_VERSION}"
-          git push origin mvn-repo --tags
+          git push origin mvn-repo
+          git push origin "refs/tags/${PROJECT_VERSION}"
       - name: Deploy skipped (tag exists)
         if: steps.tagcheck.outputs.exists == 'true'
         run: echo "Deploy skipped because tag ${{ steps.version.outputs.project_version }} already exists."
@@ -106,7 +107,6 @@ jobs:
       - name: Check if tag exists on java-bitbankcc
         id: tagcheck
         run: |
-          git fetch --tags java-bitbankcc
           VERSION="${{ steps.version.outputs.project_version }}"
           if git ls-remote --tags java-bitbankcc "refs/tags/${VERSION}" | grep -q .; then
             echo "exists=true" >> $GITHUB_OUTPUT
@@ -122,14 +122,16 @@ jobs:
         run: |
           mvn -Duser.name=bbcicd -DskipTests clean package deploy:deploy
           export PROJECT_VERSION="${{ steps.version.outputs.project_version }}"
+          git tag -d "${PROJECT_VERSION}" 2>/dev/null || true
           git tag -m "Maven artifacts for ${PROJECT_VERSION}" ${PROJECT_VERSION}
-          git fetch java-bitbankcc
-          git checkout mvn-repo
+          git fetch java-bitbankcc mvn-repo
+          git checkout -B mvn-repo java-bitbankcc/mvn-repo
           rm -rf cc
           cp -r target/mvn-repo/cc .
           git add cc
           git commit -m "Maven artifacts for ${PROJECT_VERSION}"
-          git push java-bitbankcc mvn-repo --tags
+          git push java-bitbankcc mvn-repo
+          git push java-bitbankcc "refs/tags/${PROJECT_VERSION}"
       - name: Deploy skipped (tag exists)
         if: steps.tagcheck.outputs.exists == 'true'
         run: echo "Deploy skipped because tag ${{ steps.version.outputs.project_version }} already exists."
