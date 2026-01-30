@@ -94,8 +94,11 @@ jobs:
           git config --global user.name "$COMMITTER_NAME"
           git config --global user.email "$COMMITTER_EMAIL"
       - name: Set up public
+        env:
+          GH_TOKEN: ${{ secrets.BITBANKINC_JAVA_BITBANKCC_TOKEN }}
+          REPO_URL: bitbankinc/java-bitbankcc
         run: |
-          git remote add java-bitbankcc https://github.com/bitbankinc/java-bitbankcc.git
+          git remote add java-bitbankcc "https://x-access-token:${GH_TOKEN}@github.com/${REPO_URL}.git"
       - name: mvn install
         run: mvn install
       - name: Get project version
@@ -117,8 +120,6 @@ jobs:
           fi
       - name: mvn deploy
         if: steps.tagcheck.outputs.exists != 'true'
-        env:
-          GH_TOKEN: ${{ secrets.BITBANKINC_JAVA_BITBANKCC_TOKEN }}
         run: |
           mvn -Duser.name=bbcicd -DskipTests clean package deploy:deploy
           export PROJECT_VERSION="${{ steps.version.outputs.project_version }}"
