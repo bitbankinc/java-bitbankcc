@@ -47,7 +47,6 @@ import cc.bitbank.entity.Transactions;
 import cc.bitbank.entity.Withdraw;
 import cc.bitbank.entity.WithdrawalHistory;
 import cc.bitbank.entity.enums.CandleType;
-import cc.bitbank.entity.enums.CurrencyPair;
 import cc.bitbank.entity.enums.OrderSide;
 import cc.bitbank.entity.enums.OrderType;
 import cc.bitbank.entity.enums.PositionSide;
@@ -240,43 +239,43 @@ public class Bitbankcc {
         }
     }
 
-    public Ticker getTicker(CurrencyPair pair) throws BitbankException, IOException {
-        String path = "/" + pair.getCode() + "/ticker";
+    public Ticker getTicker(String pair) throws BitbankException, IOException {
+        String path = "/" + pair + "/ticker";
         URIBuilder builder = getPublicUriBuilder(path);
         TickerResponse result = doHttpGet(builder, TickerResponse.class, getPublicRequestHeader());
         return result.data;
     }
 
-    public Depth getDepth(CurrencyPair pair) throws BitbankException, IOException {
-        String path = "/" + pair.getCode() + "/depth";
+    public Depth getDepth(String pair) throws BitbankException, IOException {
+        String path = "/" + pair + "/depth";
         URIBuilder builder = getPublicUriBuilder(path);
         DepthResponse result = doHttpGet(builder, DepthResponse.class, getPublicRequestHeader());
         return result.data;
     }
 
-    public Transactions getTransaction(CurrencyPair pair) throws BitbankException, IOException {
-        String path = "/" + pair.getCode() + "/transactions";
+    public Transactions getTransaction(String pair) throws BitbankException, IOException {
+        String path = "/" + pair + "/transactions";
         URIBuilder builder = getPublicUriBuilder(path);
         TransactionsResponse result = doHttpGet(builder, TransactionsResponse.class, getPublicRequestHeader());
         return result.data;
     }
 
-    public Transactions getTransaction(CurrencyPair pair, String YYYYMMDD) throws BitbankException, IOException {
-        String path = "/" + pair.getCode() + "/transactions/" + YYYYMMDD;
+    public Transactions getTransaction(String pair, String YYYYMMDD) throws BitbankException, IOException {
+        String path = "/" + pair + "/transactions/" + YYYYMMDD;
         URIBuilder builder = getPublicUriBuilder(path);
         TransactionsResponse result = doHttpGet(builder, TransactionsResponse.class, getPublicRequestHeader());
         return result.data;
     }
 
-    public Candlestick getCandlestick(CurrencyPair pair, CandleType candleType, String YYYYMMDD) throws BitbankException, IOException {
-        String path = "/" + pair.getCode() + "/candlestick/" + candleType.getCode() + "/" + YYYYMMDD;
+    public Candlestick getCandlestick(String pair, CandleType candleType, String YYYYMMDD) throws BitbankException, IOException {
+        String path = "/" + pair + "/candlestick/" + candleType.getCode() + "/" + YYYYMMDD;
         URIBuilder builder = getPublicUriBuilder(path);
         CandlestickResponse result = doHttpGet(builder, CandlestickResponse.class, getPublicRequestHeader());
         return result.data;
     }
 
-    public CircuitBreakInfo getCircuitBreakInfo(CurrencyPair pair) throws BitbankException, IOException {
-        String path = "/" + pair.getCode() + "/circuit_break_info";
+    public CircuitBreakInfo getCircuitBreakInfo(String pair) throws BitbankException, IOException {
+        String path = "/" + pair + "/circuit_break_info";
         URIBuilder builder = getPublicUriBuilder(path);
         return doHttpGet(builder, CircuitBreakInfoResponse.class, getPublicRequestHeader()).data;
     }
@@ -295,10 +294,10 @@ public class Bitbankcc {
         return doHttpGet(builder, MarginPositionsResponse.class, getPrivateRequestHeader(path)).data;
     }
 
-    public Order getOrder(CurrencyPair pair, long id) throws BitbankException, IOException {
+    public Order getOrder(String pair, long id) throws BitbankException, IOException {
         String path = "/v1/user/spot/order";
         List<NameValuePair> nameValuePair = new ArrayList<NameValuePair>();
-        nameValuePair.add(new BasicNameValuePair("pair", pair.getCode()));
+        nameValuePair.add(new BasicNameValuePair("pair", pair));
         nameValuePair.add(new BasicNameValuePair("order_id", String.valueOf(id)));
 
         URIBuilder builder = getPrivateUriBuilder(path).setParameters(nameValuePair);
@@ -306,7 +305,7 @@ public class Bitbankcc {
         return result.data;
     }
 
-    public Orders getOrders(CurrencyPair pair, long[] orderIds) throws BitbankException, IOException {
+    public Orders getOrders(String pair, long[] orderIds) throws BitbankException, IOException {
         String path = "/v1/user/spot/orders_info";
         URIBuilder builder = getPrivateUriBuilder(path);
 
@@ -317,23 +316,23 @@ public class Bitbankcc {
     }
 
     // for source-level compatibility, market order, etc.
-    public Order sendOrder(CurrencyPair pair, BigDecimal price, BigDecimal amount, OrderSide side, OrderType type)
+    public Order sendOrder(String pair, BigDecimal price, BigDecimal amount, OrderSide side, OrderType type)
         throws BitbankException, IOException {
         return sendOrder(pair, price, amount, side, type, false, null, null);
     }
 
-    public Order sendOrder(CurrencyPair pair, BigDecimal price, BigDecimal amount, OrderSide side, OrderType type, boolean postOnly)
+    public Order sendOrder(String pair, BigDecimal price, BigDecimal amount, OrderSide side, OrderType type, boolean postOnly)
         throws BitbankException, IOException {
         return sendOrder(pair, price, amount, side, type, postOnly, null, null);
     }
 
-    public Order sendOrder(CurrencyPair pair, BigDecimal price, BigDecimal amount, OrderSide side, OrderType type, BigDecimal triggerPrice)
+    public Order sendOrder(String pair, BigDecimal price, BigDecimal amount, OrderSide side, OrderType type, BigDecimal triggerPrice)
         throws BitbankException, IOException {
         return sendOrder(pair, price, amount, side, type, false, triggerPrice, null);
     }
 
-    public Order sendOrder(CurrencyPair pair, BigDecimal price, BigDecimal amount, OrderSide side, OrderType type,
-            boolean postOnly, BigDecimal triggerPrice, PositionSide positionSide) throws BitbankException, IOException {
+    public Order sendOrder(String pair, BigDecimal price, BigDecimal amount, OrderSide side, OrderType type, boolean postOnly,
+            BigDecimal triggerPrice, PositionSide positionSide) throws BitbankException, IOException {
         String path = "/v1/user/spot/order";
         URIBuilder builder = getPrivateUriBuilder(path);
 
@@ -343,7 +342,7 @@ public class Bitbankcc {
         return result.data;
     }
 
-    public Order cancelOrder(CurrencyPair pair, long orderId) throws BitbankException, IOException {
+    public Order cancelOrder(String pair, long orderId) throws BitbankException, IOException {
         String path = "/v1/user/spot/cancel_order";
         URIBuilder builder = getPrivateUriBuilder(path);
 
@@ -353,7 +352,7 @@ public class Bitbankcc {
         return result.data;
     }
 
-    public Orders cancelOrders(CurrencyPair pair, long[] orderIds) throws BitbankException, IOException {
+    public Orders cancelOrders(String pair, long[] orderIds) throws BitbankException, IOException {
         String path = "/v1/user/spot/cancel_orders";
         URIBuilder builder = getPrivateUriBuilder(path);
 
@@ -363,10 +362,10 @@ public class Bitbankcc {
         return result.data;
     }
 
-    public Orders getActiveOrders(CurrencyPair pair, Map<String, Long> option) throws BitbankException, IOException {
+    public Orders getActiveOrders(String pair, Map<String, Long> option) throws BitbankException, IOException {
         String path = "/v1/user/spot/active_orders";
         List<NameValuePair> nameValuePair = new ArrayList<NameValuePair>();
-        nameValuePair.add(new BasicNameValuePair("pair", pair.getCode()));
+        nameValuePair.add(new BasicNameValuePair("pair", pair));
         for(Map.Entry<String, Long> e : option.entrySet()) {
             nameValuePair.add(new BasicNameValuePair(e.getKey(), e.getValue().toString()));
         }
@@ -375,10 +374,10 @@ public class Bitbankcc {
         return result.data;
     }
 
-    public TradeHistory getTradeHistory(CurrencyPair pair, Map<String, String> option) throws BitbankException, IOException {
+    public TradeHistory getTradeHistory(String pair, Map<String, String> option) throws BitbankException, IOException {
         String path = "/v1/user/spot/trade_history";
         List<NameValuePair> nameValuePair = new ArrayList<NameValuePair>();
-        nameValuePair.add(new BasicNameValuePair("pair", pair.getCode()));
+        nameValuePair.add(new BasicNameValuePair("pair", pair));
         for(Map.Entry<String, String> e : option.entrySet()) {
             nameValuePair.add(new BasicNameValuePair(e.getKey(), e.getValue().toString()));
         }
