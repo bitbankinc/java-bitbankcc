@@ -25,7 +25,6 @@ import cc.bitbank.entity.Transactions;
 import cc.bitbank.entity.Withdraw;
 import cc.bitbank.entity.WithdrawalHistory;
 import cc.bitbank.entity.enums.CandleType;
-import cc.bitbank.entity.enums.CurrencyPair;
 import cc.bitbank.entity.enums.OrderSide;
 import cc.bitbank.entity.enums.OrderType;
 import cc.bitbank.exception.BitbankException;
@@ -41,17 +40,23 @@ public class Example {
         bb.setKey(rb.getString("key"), rb.getString("secret"));
 
         try {
-            Ticker ticker = bb.getTicker(CurrencyPair.BTC_JPY);
+            Ticker ticker = bb.getTicker("btc_jpy");
+            System.out.println(ticker.toString());
 
-            Depth depth = bb.getDepth(CurrencyPair.BTC_JPY);
+            Depth depth = bb.getDepth("btc_jpy");
+            System.out.println(depth.toString());
 
-            Transactions ts = bb.getTransaction(CurrencyPair.BTC_JPY);
+            Transactions ts = bb.getTransaction("btc_jpy");
+            System.out.println(ts.toString());
 
-            Transactions.Transaction[] ts2 = bb.getTransaction(CurrencyPair.BTC_JPY, "20170410").transactions;
+            Transactions.Transaction[] ts2 = bb.getTransaction("btc_jpy", "20170410").transactions;
+            System.out.println(ts2.toString());
 
-            List<Candlestick.Ohlcvs.Ohlcv> cs = bb.getCandlestick(CurrencyPair.BTC_JPY, CandleType._1DAY, "2017").candlestick[0].getOhlcvList();
+            List<Candlestick.Ohlcvs.Ohlcv> cs = bb.getCandlestick("btc_jpy", CandleType._1DAY, "2017").candlestick[0].getOhlcvList();
+            System.out.println(cs.toString());
 
-            CircuitBreakInfo cbi = bb.getCircuitBreakInfo(CurrencyPair.BTC_JPY);
+            CircuitBreakInfo cbi = bb.getCircuitBreakInfo("btc_jpy");
+            System.out.println(cbi.toString());
 
             Assets as = bb.getAsset();
             System.out.println(as.assets[0]);
@@ -59,22 +64,22 @@ public class Example {
             System.out.println(as.assets[2]);
             System.out.println(as.assets[3]);
 
-            Order order = bb.getOrder(CurrencyPair.BTC_JPY, 90956209);
+            Order order = bb.getOrder("btc_jpy", 90956209);
             System.out.println(order);
 
-            Order order2 = bb.sendOrder(CurrencyPair.BTC_JPY, BigDecimal.valueOf(10000), BigDecimal.valueOf(0.01), OrderSide.BUY, OrderType.LIMIT);
+            Order order2 = bb.sendOrder("btc_jpy", BigDecimal.valueOf(10000), BigDecimal.valueOf(0.01), OrderSide.BUY, OrderType.LIMIT);
             System.out.println(order2);
 
-            Order order3 = bb.cancelOrder(CurrencyPair.BTC_JPY, 129781978);
+            Order order3 = bb.cancelOrder("btc_jpy", 129781978);
             System.out.println(order3);
 
             long[] ids = {129830841, 129830734};
-            Orders orders = bb.cancelOrders(CurrencyPair.BTC_JPY, ids);
+            Orders orders = bb.cancelOrders("btc_jpy", ids);
             System.out.println(orders.orders[0]);
             System.out.println(orders.orders[1]);
 
             long[] ids2 = {90956209, 90951996};
-            Orders orders2 = bb.getOrders(CurrencyPair.BTC_JPY, ids2);
+            Orders orders2 = bb.getOrders("btc_jpy", ids2);
             System.out.println(orders2.orders[0]);
             System.out.println(orders2.orders[1]);
 
@@ -82,7 +87,7 @@ public class Example {
             option.put("count", 1L);
             option.put("since", 1490348550380L);
             // Option's parameter can be seen https://docs.bitbank.cc/#!/Order/active_orders
-            Orders orders3 = bb.getActiveOrders(CurrencyPair.BTC_JPY, option);
+            Orders orders3 = bb.getActiveOrders("btc_jpy", option);
             for(Order o : orders3.orders) {
                 System.out.println(o);
             }
@@ -101,7 +106,7 @@ public class Example {
             Map<String, String> option3 = new HashMap<String, String>();
             option3.put("count", "1");
             option3.put("since", "1696410137317");
-            TradeHistory history2 = bb.getTradeHistory(CurrencyPair.QTUM_JPY, option3);
+            TradeHistory history2 = bb.getTradeHistory("qtum_jpy", option3);
             for(Trade d : history2.trades) {
                 System.out.println(d);
             }
