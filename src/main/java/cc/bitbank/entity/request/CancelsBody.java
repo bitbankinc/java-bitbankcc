@@ -1,6 +1,5 @@
 package cc.bitbank.entity.request;
 
-import cc.bitbank.entity.enums.CurrencyPair;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -13,8 +12,8 @@ public class CancelsBody {
     @JsonProperty("order_ids")
     public long[] orderIds;
 
-    public CancelsBody(CurrencyPair pair, long[] orderIds) {
-        this.pair = pair.getCode();
+    public CancelsBody(String pair, long[] orderIds) {
+        this.pair = pair;
         this.orderIds = orderIds;
     }
 

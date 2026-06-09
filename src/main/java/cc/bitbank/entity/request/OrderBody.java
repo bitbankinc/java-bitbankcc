@@ -1,6 +1,5 @@
 package cc.bitbank.entity.request;
 
-import cc.bitbank.entity.enums.CurrencyPair;
 import cc.bitbank.entity.enums.OrderSide;
 import cc.bitbank.entity.enums.OrderType;
 import cc.bitbank.entity.enums.PositionSide;
@@ -27,9 +26,9 @@ public class OrderBody {
     @JsonProperty("position_side")
     public String positionSide;
 
-    public OrderBody(CurrencyPair pair, BigDecimal amount, BigDecimal price, OrderSide side, OrderType type,
+    public OrderBody(String pair, BigDecimal amount, BigDecimal price, OrderSide side, OrderType type,
             boolean postOnly, BigDecimal triggerPrice, PositionSide positionSide) {
-        this.pair = pair.getCode();
+        this.pair = pair;
         this.amount = amount.toString();
         this.price = price;
         this.side = side.getCode();
